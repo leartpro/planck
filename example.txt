@@ -22,8 +22,8 @@ a = f * g //TODO: s.o.
 /*
 if abfragen und ausgaben
 */
-if c == 0 || f < c {
-stdnum <<= d
+if c* == 0 || f* < c* {
+stdnum <<= d*
 }
 if a != 1 && a > 0 {
 stdout <<= "Test1\n"
@@ -38,14 +38,6 @@ pointer
 {a} \-> //cancelt das pointen von a auf b
 {b,c} \-> //b und c canceln jeweils für sich das pointen auf d
 {d} \-> {f} //TODO: sollte {d} -> {e,f} möglich sein, cancelt d das pointen nur auf f
-
-/*
-pointer mit bezeichner
-*/
-{g} p1 -> {h} //g pointet auf h mit pointer p1
-{i,j} p2 -> {k} //i und j pointen auf k mit pointer p2
-p1 \-> //löscht den pointer p1 TODO: alternativ dazu vlt. auch free(p1)
-p2 {j} \-> /löscht das pointen von j auf k TODO: alternativ dazu vlt. auch free(p1); p2 löschen, wenn p2 leer ist
 
 /*
 schleifen
