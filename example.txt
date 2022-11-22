@@ -9,6 +9,91 @@ variablen initialisierung & deklaration
 a = 1
 b,c = 2
 d = 2^16, e = 3.75
++-*/
+
+a* = 'a'
+a = "asdfasdf" // wie 'a' -> 's' -> ....
+a = b
+
+b = 1000
+a = 23
+c = a * c //23 * 1000
+a = 6knoten
+b = 5knoten
+//multiply(a, b, c) TODO: für mehr als 2bytes als nachkommastellen
+b = 0.0
+b = 0
+~* //double operator 2 nachkommastellen-knoten
+c* = a* * b* //23*256
+
+a.next //b //böse (aber gut so)
+a >> //b //gut so!!!
+stdout <<= a //gut so!!!
+a << b // man hängt b an a an => a zeigt zu b
+a,b << b
+
+a <- i === a -> i
+
+a* = 'a'
+
+// 1. Zwei knoten vergleichen vom wert
+a* == b*
+// 2. ein pointer vergleichen von der addresse/id
+a === b
+
+if equals(a, 3000) { //bibliothek, vergleich von mehreren knoten
+
+} elif {
+
+}
+
+if equals(...) stdout <<= "deine mom" //Das ok
+
+a = 1
+b = 3
+c = a + b // 4
+&a -> &b
+&b -> &a
+b = -1234 * 345435 * 234
+&b = -1234 * 345435 * 234
+
+a* = 5
+b* = 7
+a -> b
+
+a = {D} b = {C}
+a -> b
+a = {D -> C} b = {C}
+b = a
+a = {D -> C} b = {D -> C}
+b = a >>
+a = {D -> C} b = {C}
+
+
+a = 300
+a = {1} -> {45}
+a -> {1} -> {45}
+
+
+3000
+{00001011}
+
+a -> b
+a* = 1
+a = {1}
+c = 1
+a -> c
+
+&a -> &b
+a = 1
+b = 1
+&a = &b
+
+a = "aa"
+a = 'a'
+a = 3000
+
+&stdout << "asdf"
 
 /*
 rechenoperatoren
@@ -18,6 +103,67 @@ c -= b
 g = d / e //TODO: fließkommatarzahl
 a = f * g //TODO: s.o.
 //TODO: bit-rechenoperatoren fehlen hier noch
+
+wenn knotenfolgen verglichen/miteinander verrechnet werden:
+{...} -> {...} -> {...}
+         {...} -> {...}
+
+// Alle operatoren für pointer:
+a //initialisiert a
+a << b //hängt b an a => a zeigt auf b
+a,b,c << d //erlaubt
+a = b //die addresse des knotens von a wird gleich der addresse von knoten b
+a <<= b //hängt b an a an und geht auf b
+a >> // a.next
+a <\ // a zeigt auf nichts mehr
+a ?> // wenn a auf nichts zeigt gibt es 0, sonst 1
+a === b //vergleicht beide variablen die gleiche addresse halten
+a !== b //vergleicht beide variablen die gleiche addresse halten
+a == b //vergleicht die werte aller pointer an a mit allen von b
+a != b //vergleicht die werte aller pointer an a mit allen von b
+a < b // wenn true, dann 1, sonst 0
+a > b //wenn true, dann 1 sonst 0
+a <= b //s.o.
+a >= b //s.o.
+a + b //wert von a plus wert von b
+a - b //s.o
+a * b //s.o
+a / c //s.o
+a ~* b //für double
+a ~/ b  //für double
+-a // 0 - a
+a += b //s.o
+a -= b //s.o
+a *= b //s.o
+a /= c //s.o
+a ~*= b //für double
+a ~/= b  //für double
+a || b => 0001 || 1001 => 1001 //binary or
+a && b => 0001 && 1001 => 0001 //binary and
+a | b  => 0001 | 1001 => 0001 //binary xor
+!a => !0101 => 1010 //binary not
+//TODO: cast von double zu normal und andersherum mit bibliotheken (fuck u @users)
+a % b //modulo
+
+{1111111} -> {10101010} // negativ
+{00000000} -> {11111111} -> {10101010} // positiv
+
+a*++
+a*--
+a* + b*
+a* - b*
+a* / b*
+a* * b*
+>; <; ==; =; >=; <=; !=; !; +=; -=; *=; /=; ||; &&; |; %;
+[a*]
+{a*}
+a = a*
+
+//b || a* bitte drinne :)
+
+
+a = a ?>
+a* = a ?>
 
 /*
 if abfragen und ausgaben
