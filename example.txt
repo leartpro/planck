@@ -1,0 +1,68 @@
+/*
+import
+*/
+#import<list> //importiert die Datei list.plk
+
+/*
+variablen initialisierung & deklaration
+*/
+a = 1
+b,c = 2
+d = 2^16, e = 3.75
+
+/*
+rechenoperatoren
+*/
+f = a+2
+c -= b
+g = d / e //TODO: fließkommatarzahl
+a = f * g //TODO: s.o.
+//TODO: bit-rechenoperatoren fehlen hier noch
+
+/*
+if abfragen und ausgaben
+*/
+if c == 0 || f < c {
+stdnum <<= d
+}
+if a != 1 && a > 0 {
+stdout <<= "Test1\n"
+}
+
+/*
+pointer
+*/
+{a} -> {b} //a pointet zu b
+{b,c} -> {d} //b und c pointen jeweils für sich zu d
+{d} -> {e,f} //TODO: soll das möglich sein?
+{a} \-> //cancelt das pointen von a auf b
+{b,c} \-> //b und c canceln jeweils für sich das pointen auf d
+{d} \-> {f} //TODO: sollte {d} -> {e,f} möglich sein, cancelt d das pointen nur auf f
+
+/*
+pointer mit bezeichner
+*/
+{g} p1 -> {h} //g pointet auf h mit pointer p1
+{i,j} p2 -> {k} //i und j pointen auf k mit pointer p2
+p1 \-> //löscht den pointer p1 TODO: alternativ dazu vlt. auch free(p1)
+p2 {j} \-> /löscht das pointen von j auf k TODO: alternativ dazu vlt. auch free(p1); p2 löschen, wenn p2 leer ist
+
+/*
+schleifen
+*/
+//TODO: beides möglich? oder keins oder nur eins von beiden?
+//1. liste von 0 bis 5 generieren
+l = 0
+loop i < 5 {
+i++
+l <<= i
+}
+
+//2. liste von 0 bis 5 generieren
+l
+loop i =>> l {
+i++
+}
+
+
+
