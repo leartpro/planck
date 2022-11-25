@@ -115,6 +115,7 @@ a,b,c << d //erlaubt
 a = b //die addresse des knotens von a wird gleich der addresse von knoten b
 a <<= b //hängt b an a an und geht auf b
 a >> // a.next
+a >> // a.next
 a <\ // a zeigt auf nichts mehr
 a ?> // wenn a auf nichts zeigt gibt es 0, sonst 1
 a === b //vergleicht beide variablen die gleiche addresse halten
