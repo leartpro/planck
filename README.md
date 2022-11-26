@@ -35,7 +35,7 @@ b* = 'p'
 ```
 
 Dabei darf ein Wert nie größer als ein 64Bit sein.
-Es können daher nur ganze Zahlen und Festkommazahlen,
+Es können daher ganze Zahlen und Fließkommazahlen,
 so wie einzelne Zeichen z.B. 'a' dargestellt werden.
 Die Zuweisung von größeren Zahlen oder von Zeichenketten wirft einen Syntaxfehler.
 Sollte die Zuweisung einer zu großen Zahl innerhalb der Laufzeit passieren (z.B. durch eine Rechenoperation),
@@ -56,6 +56,12 @@ d* = c* + 200 // Wert von 300
 
 Wie dem Beispiel zu entnehmen ist, können Zeichen mit Zahlen verrechnet werden.
 Dabei wird der Ascii-Wert des Zeichens betrachtet.
+
+Der Wertebereich von Fließkommazahlen liegt zwischen -2^53Bit und +2^53Bit.
+Die maximale Anzahl an Nachkommastellen beträgt dabei 17.
+```
+a* = 304.2389457
+```
 
 ### Pointer
 
@@ -81,7 +87,7 @@ b* = 'a' // a* == b*
 ```
 
 Da diese Variablen Ketten bilden können (z.B. A -> B -> C -> D).
-Und jede dieser Variablen einen Byte-Wert enthalten kann,
+Und jede dieser Variablen einen bis zu 64Bit großen Wert enthalten kann,
 können Zeichenketten gebildet werden.
 Im folgenden Beispiel wird die Zeichenkette "abc" von a aus gebildet.
 
@@ -102,41 +108,10 @@ a = "abc"
 Der Pointer den a dabei vorher besaß,
 wird also verworfen und durch einen neuen Pointer ersetzt.
 
-Genau das gleiche Prinzip kann auf Zahlen angewendet werden.
-Wenn einer Variable ein Wert zugewiesen wird,
-wird dieser Variable ein neuer Pointer zugewiesen.
-Dieser zeigt auf eine Variable, welche den zugewiesenen Wert enthält.
-Es können des Weiteren wie bei Zeichenketten, Verkettungen erzeugt werden,
-sollten die Zahlen zu groß für ein Byte sein.
-
-```
-a = 7 // a -> A: {00000111} ->
-a = 312 // a -> B: {01111111} -> {10111001} ->
-a = "hallo" // a -> D: {01101000} -> {01100001} -> {01101100} -> {01101100} -> {01101111} ->
-```
-
-Fließkommazahlen sind nicht möglich.
-Festkommazahlen können so erzeugt werden:
-
-```
-a = 0.3
-b = 0.4
-```
 
 ## Operatoren
 
 ### Operatoren von Pointern
-
-Bei Rechenoperationen setzten sich die einzelnen Operanten aus der kompletten Pointerkette zusammen.
-Daher wird (hier beispielsweise bei a) der Wert aus allen Bytes der Kette zusammengesetzt.
-Das Ergebnis der Rechnung ist hier ebenfalls eine Kette an Pointern.
-Es wird c auf den ersten Pointer der Kette gesetzt.
-
-```
-a = 300 // a -> A: {01111111} -> {10101101} ->
-b = 3 // b -> B: {00000011} -> 
-c = a * b // c -> C: {01111111} -> {11111111} -> {11111111} -> {11111111} -> {00001000}
-```
 
 Pointer und Werte müssen,
 genauso wie ihre Operatoren und Literals,
@@ -182,20 +157,16 @@ a <\ // von A wird C abgehangen an A hängt nichts mehr
 ### Vergleichsoperatoren
 
 Konditionale Operatoren bei Pointern
-geben immer den Pointer einer neuen Variable zurück,
-die eins für true oder null für false enthält.
+geben immer den Wert zero oder eins zurück.
 
 ```
-// a -> A, b -> B
-a ?> // ob A auf eine andere Variable
+a -> A, b -> B
+a ?> // ob A auf eine andere Variable zeigt
 a === b // ob a und b den gleichen Pointer enthalten
-a == b // ob von A und B aus die beiden Ketten die gleichen Werte enthalten
-a > b // ob von A und B aus die beiden Ketten als Zahl betrachtet,
-      // die Kette von A einen größeren Wert enthält
 ```
 
 Konditionale Operatoren bei den Werten von Pointern
-geben lediglich die Werte 1 für true und 0 für false.
+geben lediglich die Werte eins für true und zero für false.
 
 ```
 // a -> A, b -> B
@@ -208,14 +179,11 @@ a* < b* // ob der Wert von A kleiner ist als der von B
 Es gibt die standard logischen Operatoren
 | (xor), || (or), && (and), ! (not).
 
-Diese können getrennt angewendet werden auf entweder
-Ketten oder Werten.
+Diese können auf Werte angewendet werden und geben einen anderen Wert zurück.
 
 ```
 a* = 1 + 4 + 16 + 64 // 01010101
 a* = !a* // 10101010
-a = 312 // a -> A: {01111111} -> {10111001} ->
-a = a && 11 // A: {01010000} -> {00000000} -> bzw. 10
 ```
 
 ### Zuweisungsoperatoren
@@ -230,7 +198,7 @@ a* &&= 234 // a* = a* && 234
 
 Da der verändernde Operator '<<'
 den Pointer der hintersten Variable in der Kette des zweiten Operanden zurückgibt,
-kann dieser auch als zuweisungsoperator verwendet werden.
+kann dieser auch als Zuweisungsoperator verwendet werden.
 
 ```
 // a -> A
@@ -269,12 +237,11 @@ Alle Schlüsselworte von planck dürfen nicht als Variablenname verwendet werden
 ### Bedingung
 
 Als Bedingung darf ein Wert oder ein Pointer verwendet werden.
-Ist der Wert nicht 0 oder der gesamte Wert der Kette des Pointers nicht 0,
-wird die Bedingung erfüllt, ansonsten nicht.
+Ist der Wert nicht zero, wird die Bedingung erfüllt, ansonsten nicht.
 
 Beispiel für eine erfüllende Bedingung: 10100000
 
-Beispiel für eine nicht erfüllende Bedingung: {00000000} -> {00000000} -> {00000000} ->
+Eine nicht erfüllende Bedingung: 00000000
 
 ### If, elif und else
 
@@ -283,7 +250,7 @@ Ein Beispiel:
 ```
 if a* == 'a' {
      ...
-} elif a === b && a == 511 {
+} elif a === b && a* == 511 {
      ...
 } else {
      ...
@@ -293,24 +260,40 @@ if a* == 'a' {
 Ohne Klammern, darf auch ein if alleine stehen:
 
 ```
-if (a << b)* == 'a' a << c
+if (a << b)* == 'a': a << c
+```
+
+### Schleifen
+
+```
+loop <Bedingung> {
+<Statements>
+}
+
+
+loop a* > 0 {
+...
+} 
+
 ```
 
 ## Funktionen
 
 ## Reference Manual
 
-| nonterminal      | syntax                                                                                                 | description                                                 |
-|------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
-| *Statement*      | *EmptyStatement*<br/>*Expression*<br/>*VariableAssignment*<br/>*ControlFlow*<br/>*FunctionDeclaration* | The planck language exclusively consists *Statement*s       |
-| *EmptyStatement* |                                                                                                        | An empty line consisting of only whitespace and/or comments |
+| nonterminal      | syntax                                                                                         | description                                                 |
+|------------------|------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
+| *Statement*      | *EmptyStatement*<br/>*Expression*<br/>*Assignment*<br/>*ControlFlow*<br/>*FunctionDeclaration* | The planck language exclusively consists *Statement*s       |
+| *EmptyStatement* |                                                                                                | An empty line consisting of only whitespace and/or comments |
 
 ### PointerReference and ValueReference
 
-| nonterminal        | syntax                | description                                                                                     | Example |
-|--------------------|-----------------------|-------------------------------------------------------------------------------------------------|---------|
-| *PointerReference* |                       | A Variable that has a pointer                                                                   | `a`     |
-| *ValueReference*   | *PointerReference*`*` | The Value of a Variable, no whitespace is allowed in between the *PointerReference* and the `*` | `a*`    |
+
+
+| nonterminal        | syntax                            | description                                                                                     | Example |
+|--------------------|-----------------------------------|-------------------------------------------------------------------------------------------------|---------|
+| *PointerReference* | Regex: **(?![0-9])[a-zA-Z_0-9]+** | Variable reference of the pointer.                                                              | `a`     |
+| *ValueReference*   | *PointerReference*`*`             | The Value of a Variable, no whitespace is allowed in between the *PointerReference* and the `*` | `a*`    |
 
 ### Expression
 
@@ -320,44 +303,21 @@ if (a << b)* == 'a' a << c
 
 #### PointerExpression
 
-| nonterminal                   | syntax                                                                                                                         | description                               |
-|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
-| *PointerExpression*           | *PointerReference*<br/>*PointerLiteral*<br/> `{`*ValueExpression* `}`<br/> `(` *PointerExpression* `)`<br/> *PointerOperation* | An expression with the value of a pointer |
-| *PointerOperation*            | *TwoOperandsPointerOperation*  <br/> *PrefixPointerOperation* <br/> *PostfixPointerOperation*                                  |                                           |
-| *TwoOperandsPointerOperation* | *PointerExpression* *TwoOperandsPointerOperator* *PointerExpression*<br/>                                                      |                                           |
-| *TwoOperandsPointerOperator*  |                                                                                                                                |                                           |
-| *PrefixPointerOperation*      | *PrefixPointerOperator* *PointerExpression*                                                                                    |                                           |
-| *PrefixPointerOperator*       |                                                                                                                                |                                           |
-| *PostfixPointerOperation*     | *PointerExpression* *PostfixPointerOperator*                                                                                   |                                           |
-| *PostfixPointerOperator*      |                                                                                                                                |                                           |
-| *PointerLiteral*              | *PointerString* <br/> *PointerWholeNumber* <br/> *PointerFixedPointNumber*                                                     |                                           |
+| nonterminal                   | syntax                                                                                                                          | description                               |
+|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
+| *PointerExpression*           | *PointerReference*<br/> `{`*ValueExpression* `}`<br/> `(` *PointerExpression* `)`<br/> *PointerOperation* <br/> *StringLiteral* | An expression with the value of a pointer |
+| *PointerOperation*            | *TwoOperandsPointerOperation*  <br/> *PostfixPointerOperation*                                                                  |                                           |
+| *TwoOperandsPointerOperation* | *PointerExpression* *TwoOperandsPointerOperator* *PointerExpression*<br/>                                                       |                                           |
+| *PostfixPointerOperation*     | *PointerExpression* *PostfixPointerOperator*                                                                                    |                                           |
 
 #### TwoOperandsPointerOperator
 
 a -> A, b -> B
 
-| operator             | precedence | operator name                    | description                                         |
-|----------------------|------------|----------------------------------|-----------------------------------------------------|
-| `a * b`              | 10         | multiplication                   | multiplication for only full numbers                |
-| `a / b`              | 10         | division                         | division for only full numbers                      |
-| `a ~* b`             | 10         | multiply for fixed point numbers | multiplication for only fixed point numbers         |
-| `a ~/ b`             | 10         | divide for fixed point numbers   | division for only fixed point numbers               |
-| `a + b`, `a - b`     | 9          | addition, subtraction            | addition for numbers                                |
-| `a << b`             | 8          | link                             | link A to B, return the last pointer of the B chain |
-| `a < b`, `a > b`     | 7          | is-less, is-greater              |                                                     |
-| `a <= b`, `a >= b`   | 7          | smaller/greater or equals        |                                                     |
-| `a === b`, `a !== b` | 6          | strict equals, strict not equals |                                                     |
-| `a == b`, `a != b`   | 6          | equals, not equals               |                                                     |
-| `a && b`             | 5          | and                              |                                                     |
-| `a &#124;&#124; b`   | 4          | or                               |                                                     |                               |             | 
-| `a ^ b`              | 4          | xor                              |                                                     | 
+| Operator | precedence | operator name                    | description                                         |
+|----------|------------|----------------------------------|-----------------------------------------------------|
+| `a << b` | 8          | link                             | link A to B, return the last pointer of the B chain |
 
-#### PrefixPointerOperator
-
-| Operator      | operator name | Bedeutung |
-|---------------|---------------|-----------|
-| `-a`            | negate        |           |
-| `!a`            | not           |           |
 
 #### PostfixPointerOperator
 
@@ -365,35 +325,32 @@ a -> A, b -> B
 |----------|---------|------------------------------------------------|
 | `a >>`   | next    |                                                |
 | `a <\ `  | unlink  |                                                |
-| `a ?>`   | is-next |                                                |
 
-### Werte
+#### StringLiteral
 
-#### Wert schreibweise
+Ein String literal wird mit einem " angefangen und terminiert.
 
-Regex eines Variablen Wertes: `WERT = [a-zA-Z_]+\*`
+#### ValueExpression
+| nonterminal            | syntax                                                                                                                                                      | description                                                 |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
+| *ValueExpression*      | *ValueReference* <br/> *ValueOperation* <br/> *ValuePrefixOperation* <br/> `(` *ValueExpression* `)`<br/> *ConditionalPointerOperator* <br/> *ValueLiteral* |                                                             |
+| *ValueOperation*       | *ValueExpression* *ValueOperator* *ValueExpression*                                                                                                         |                                                             |
+| *ValuePrefixOperation* | *ValuePrefix* *ValueExpression*                                                                                                                             | Between prefix and the expression, no whitespace is allowed |
+| *ValueLiteral*         | *Character* <br/> *Number* <br/> *FloatingPointNumber* <br/> *HexUnsignedNumber*                                                                            |                                                             |
 
-#### Wert zuweisung
 
-[Wert]
+#### ConditionalPointerOperator
 
-#### Nummern
+| Operator             | Name                             | Bedeutung |
+|----------------------|----------------------------------|-----------|
+| `a ?>`               | is-next                          |           |
+| `a === b`, `a !== b` | strict equals, strict not equals |           |
 
-Eine Wert nummer kann von 0 bis 255 sein.
+#### Character
 
-#### Zeichen
-
-Ein Char, den man einen Wert zuweisen kann, wird als `'[char]'` geschrieben,
+Ein Char, den man einen Wert zuweisen kann, wird als `'[<char>]'` geschrieben,
 wobei char für den konkreten char steht.
-
-`[char]` kann sein:
-
-```
-()[]{}.,:;!?*~+-_"`><=@/^|#$
-0123456789
-abcdefghijklmnopqrstuvxyz
-ABCDEFGHIJKLMNOPQRSTUVXYZ
-```
+Ein char kann dabei jedes Ascii Zeichen sein.
 
 Ausnahmen:
 
@@ -404,6 +361,91 @@ Ausnahmen:
 |         | ANSI Escape                 | `'\e'`                   |
 |         | Zeilenumbruch               | `'\n'`                   |
 |         | Leerzeichen                 | `' '`                    |
+
+#### HexUnsignedNumber
+
+Unsigned integer as a 64bit hexadecimal number, with prefix 0x.
+
+#### Number
+
+Integer numbers and negative integer numbers are from -9223372036854775808 to 9223372036854775807.
+
+#### FloatingPointNumber
+
+A floating point number is written in the format of always having at least one decimal place.
+Otherwise, the literal is interpreted as an integer number.
+
+#### ValueOperator
+
+Regex eines Variablen Wertes: `WERT = ` <!--TO-DO: testen -->
+
+| operator           | precedence | operator name                    | description                                 |
+|--------------------|------------|----------------------------------|---------------------------------------------|
+| `a * b`            | 10         | multiplication                   | multiplication for only full numbers        |
+| `a / b`            | 10         | division                         | division for only full numbers              |
+| `a % b`            | 10         | modulo                           |                                             |
+| `a ~* b`           | 10         | multiply for fixed point numbers | multiplication for only fixed point numbers |
+| `a ~/ b`           | 10         | divide for fixed point numbers   | division for only fixed point numbers       |
+| `a + b`, `a - b`   | 9          | addition, subtraction            | addition for numbers                        |
+| `a < b`, `a > b`   | 7          | is-less, is-greater              |                                             |
+| `a <= b`, `a >= b` | 7          | smaller/greater or equals        |                                             |
+| `a == b`, `a != b` | 6          | equals, not equals               |                                             |
+| `a && b`           | 5          | and                              |                                             |
+| `a &#124;&#124; b` | 4          | or                               |                                             |    
+| `a ^ b`            | 4          | xor                              |                                             | 
+
+#### ValuePrefix
+
+| Operator | operator name | Bedeutung |
+|----------|---------------|-----------|
+| `-a*`    | negate        |           |
+| `!a*`    | not           |           |
+
+### Assignment
+
+
+| nonterminal  | syntax                                      | description |
+|--------------|---------------------------------------------|-------------|
+| *Assignment* | *ValueAssignment* <br/> *PointerAssignment* |             |
+
+#### ValueAssignment
+
+| nonterminal       | syntax                                                       | description |
+|-------------------|--------------------------------------------------------------|-------------|
+| *ValueAssignment* | *ValueReference* *ValueAssignmentOperator* *ValueExpression* |             |
+
+#### ValueAssignmentOperator
+
+| Operator | operator name | Bedeutung |
+|----------|---------------|-----------|
+| `=`      | assigment     |           |
+
+#### PointerAssignment
+
+| nonterminal         | syntax                                                                                                                   | description |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------|-------------|
+| *PointerAssignment* | *PointerReference* *PointerAssignmentOperator* *PointerExpression*<br/>*PointerReference* *PointerSelfAssigmentOperator* |             |
+
+#### PointerAssignmentOperator
+
+| Operator  | operator name                               | Bedeutung |
+|-----------|---------------------------------------------|-----------|
+| `a = b`   | assigment                                   |           |
+| `a <<= b` | link and assigment to last of complete link |           |
+
+#### PointerSelfAssigmentOperator
+
+| Operator  | operator name     | Bedeutung |
+|-----------|-------------------|-----------|
+| `a =>>`   | assigment to next |           |
+
+#### Nummern
+
+Ein Wert kann bei ganzen Zahlen von -2^64 bis 2^64 - 1 gehen.
+Bei Fließkommazahlen von -2^53 bis 2^53 mit 17 Nachkommastellen.
+
+#### Zeichen
+
 
 ### Pointer
 
@@ -416,6 +458,6 @@ Regex einer Variable: `[a-zA-Z_]+`
 | stdout | Etwas in die Konsole ausgeben (stdout)                            | `<<=` etwas an stdout anhängen und damit ausgeben                                                                                         |
 | stderr | Etwas in die Konsole ausgeben (stderr)                            | `<<=` etwas an stderr anhängen und damit ausgeben                                                                                         |
 | stdin  | Überprüfen ob ein char eingegeben wurde und lese dann diesen char | `?>` überprüfen ob ein neuer char eingegangen ist <br/> `=>>` zum nächsten char gehen <br/> `stdin*` (nur lesen) lesen des nächsten chars |
-| os     |                                                                   | `os* = [code]` das Program beenden mit dem gegebenen code                                                                                 | 
+| os     | Programm beenden                                                  | `os* = [code]` das Program beenden mit dem gegebenen code                                                                                 | 
 
 

@@ -203,6 +203,18 @@ loop i =>> l {
 i++
 }
 
+TODO:
+    -exponential und wurzel als bibliothek
+    loop a =>> {
+    ...
+    }
+
+    daher loop <Iterator> { ... }
+
+    -labels
+
+    -do ... loop <Bedingung>
+
 OPTIMIERUNGEN:
 Alle Werte haben 64Bit für den User
     - Eigentlich passen sie sich aber von 8Bit bis 64Bit dynamisch an
@@ -216,7 +228,7 @@ Alle Werte haben 64Bit für den User
 Für weitere Versionen:
     - Multipointer a[] = {a,b,c} //a zeigt auf mehrere Pointer
     - graphical user interface (https://www.quora.com/How-do-I-build-my-own-GUI-framework-from-scratch?share=1)
-    - Hexdezimale Werte zuweisen
+    - Hexdezimale Werte zuweisen die dann unsigned sind
     - mehrere Assigments in einer Zeile z.B. a,b,c = d
     - unsigned/signed einführen für größeren positiven zahlenbereich
       wie Festkommazahlen wird erst bei der Behandlung der Zahlen unterschieden (kein Keyword)
