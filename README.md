@@ -448,20 +448,21 @@ Otherwise, the literal is interpreted as an integer number.
 
 Regex eines Variablen Wertes: `WERT = ` <!--TO-DO: testen -->
 
-| operator           | precedence | operator name                    | description                                 |
-|--------------------|------------|----------------------------------|---------------------------------------------|
-| `a * b`            | 10         | multiplication                   | multiplication for only full numbers        |
-| `a / b`            | 10         | division                         | division for only full numbers              |
-| `a % b`            | 10         | modulo                           |                                             |
-| `a ~* b`           | 10         | multiply for fixed point numbers | multiplication for only fixed point numbers |
-| `a ~/ b`           | 10         | divide for fixed point numbers   | division for only fixed point numbers       |
-| `a + b`, `a - b`   | 9          | addition, subtraction            | addition for numbers                        |
-| `a < b`, `a > b`   | 7          | is-less, is-greater              |                                             |
-| `a <= b`, `a >= b` | 7          | smaller/greater or equals        |                                             |
-| `a == b`, `a != b` | 6          | equals, not equals               |                                             |
-| `a && b`           | 5          | and                              |                                             |
-| `a &#124;&#124; b` | 4          | or                               |                                             |    
-| `a ^ b`            | 4          | xor                              |                                             | 
+| operator           | precedence | operator name                       | description                                 |
+|--------------------|------------|-------------------------------------|---------------------------------------------|
+| `a * b`            | 10         | multiplication                      | multiplication for only full numbers        |
+| `a / b`            | 10         | division                            | division for only full numbers              |
+| `a % b`            | 10         | modulo                              |                                             |
+| `a ~* b`           | 10         | multiply for fixed point numbers    | multiplication for only fixed point numbers |
+| `a ~/ b`           | 10         | divide for fixed point numbers      | division for only fixed point numbers       |
+| `a + b`, `a - b`   | 9          | addition, subtraction               | addition for numbers                        |
+| `a ~+ b`, `a ~- b` | 9          | floating point addition/subtraction | addition for numbers                        |
+| `a < b`, `a > b`   | 7          | is-less, is-greater                 |                                             |
+| `a <= b`, `a >= b` | 7          | smaller/greater or equals           |                                             |
+| `a == b`, `a != b` | 6          | equals, not equals                  |                                             |
+| `a && b`           | 5          | and                                 |                                             |
+| `a &#124;&#124; b` | 4          | or                                  |                                             |    
+| `a ^ b`            | 4          | xor                                 |                                             | 
 
 #### ValuePrefix
 
