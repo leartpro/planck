@@ -34,8 +34,8 @@ a* = 7
 b* = 'p'
 ```
 
-Dabei darf ein Wert nie größer als ein Byte sein.
-Es können daher nur positive ganze Zahlen von 0 bis 255,
+Dabei darf ein Wert nie größer als ein 64 Bit (bzw. 8 Byte) sein.
+Es können daher nur ganze Zahlen oder Festkommazahlen,
 so wie einzelne Zeichen z.B. 'a' dargestellt werden.
 Die Zuweisung von größeren Zahlen oder Zeichenketten wirft einen Syntaxfehler.
 

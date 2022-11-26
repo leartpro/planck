@@ -218,3 +218,5 @@ Für weitere Versionen:
     - graphical user interface (https://www.quora.com/How-do-I-build-my-own-GUI-framework-from-scratch?share=1)
     - Hexdezimale Werte zuweisen
     - mehrere Assigments in einer Zeile z.B. a,b,c = d
+    - unsigned/signed einführen für größeren positiven zahlenbereich
+      wie Festkommazahlen wird erst bei der Behandlung der Zahlen unterschieden (kein Keyword)
