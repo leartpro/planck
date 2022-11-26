@@ -122,54 +122,56 @@ b = 0.4
 ```
 ## Operatoren
 
-| Operator   | Name                     | Bedeutung                                      |
-|------------|--------------------------|------------------------------------------------|
-| a          | Initialisierungsoperator | Standard Initialisierung mit einem leeren Byte |
-| a << b     |                          |                                                |
-| a,b,c << d |                          |                                                |
-| a = b      |                          |                                                |
-| a <<= b    |                          |                                                |
-| a >>       |                          |                                                |
-| a <\       |                          |                                                |
-| a ?>       |                          |                                                |
-| a === b    |                          |                                                |
-| a !== b    |                          |                                                |
-| a == b     |                          |                                                |
-| a != b     |                          |                                                |
-| a < b      |                          |                                                |
-| a > b      |                          |                                                |
-| a <= b     |                          |                                                |
-| a >= b     |                          |                                                |
-| a + b      |                          |                                                |
-| a - b      |                          |                                                |
-| a * b      |                          |                                                |
-| a / b      |                          |                                                |
-| a ~* b     |                          |                                                |
-| a ~/ b     |                          |                                                |
-| -a         |                          |                                                |
-| a +=       |                          |                                                |
-| a -= b     |                          |                                                |
-| a *= b     |                          |                                                |
-| a /= b     |                          |                                                |
-| a  ~*= b   |                          |                                                |
-| a ~/= b    |                          |                                                |
+| Operator      | Name                     | Bedeutung                                      |
+|---------------|--------------------------|------------------------------------------------|
+| a             | Initialisierungsoperator | Standard Initialisierung mit einem leeren Byte |
+| a = {\<Wert>} |                          |                                                |
+| a << b        |                          |                                                |
+| a,b,c << d    |                          |                                                |
+| a = b         |                          |                                                |
+| a <<= b       |                          |                                                |
+| a >>          |                          |                                                |
+| a <\          |                          |                                                |
+| a ?>          |                          |                                                |
+| a === b       |                          |                                                |
+| a !== b       |                          |                                                |
+| a == b        |                          |                                                |
+| a != b        |                          |                                                |
+| a < b         |                          |                                                |
+| a > b         |                          |                                                |
+| a <= b        |                          |                                                |
+| a >= b        |                          |                                                |
+| a + b         |                          |                                                |
+| a - b         |                          |                                                |
+| a * b         |                          |                                                |
+| a / b         |                          |                                                |
+| a ~* b        |                          |                                                |
+| a ~/ b        |                          |                                                |
+| -a            |                          |                                                |
+| a +=          |                          |                                                |
+| a -= b        |                          |                                                |
+| a *= b        |                          |                                                |
+| a /= b        |                          |                                                |
+| a  ~*= b      |                          |                                                |
+| a ~/= b       |                          |                                                |
 
 ### Operatoren von Pointern
 
-Rechenoperatoren können von ein bis zwei Pointern den gesamten Wert
-von allen folgenden Pointern betrachten,
-mit diesem Wert rechnen und in eine neue Kette verteilen.
-Der Pointer dieser Kette wird dann zurückgegeben.
-Operatoren können niemals die Werte verändern in den Variablen,
-sondern nur neue Ketten zurückgegeben.
+Bei Rechenoperationen setzten sich die einzelnen Operanten aus der kompletten Pointerkette zusammen.
+Daher wird (hier beispielsweise bei a) der Wert aus allen Bytes der Kette zusammengesetzt.
+Das Ergebnis der Rechnung ist hier ebenfalls eine Kette an Pointern.
+Es wird c auf den ersten Pointer der Kette gesetzt.
+
 ```
-a = 2 // a -> A: {00000010} ->
+a = 300 // a -> A: {01111111} -> {10101101} ->
 b = 3 // b -> B: {00000011} -> 
-a = a * b * 2 // a -> C: {00001100}
+c = a * b // c -> C: {01111111} -> {11111111} -> {11111111} -> {11111111} -> {00001000}
 ```
 
-Pointer und Werte müssen jedoch immer getrennt bleiben,
-auch ihre Operatoren und Literals. <!-- TODO: vielleicht bis auf manche Operatoren -->
+Pointer und Werte müssen,
+genauso wie ihre Operatoren und Literals,
+getrennt behandelt werden.
+<!-- TO-DO: vielleicht bis auf manche Operatoren -->
 
 ```
 a* = a + b // Geht nicht, da das Ergebnis von zwei Pointern,
@@ -202,15 +204,15 @@ a << b // An A wird B angehängt,
 a >> // Der Pointer von B wird zurückgegeben,
      // wenn A auf nichts zeigen würde,
      // ergäbe das einen Fehler
-a << c // an A wird C gehangen, b wird abgehangen
-a <\ // von A wird C abgehangen, an A hängt nichts mehr
+a << c // an A wird C gehängt, b wird abgehangen
+a <\ // von A wird C abgehangen an A hängt nichts mehr
 ```
 
 ### Vergleichsoperatoren
 
 Konditionale Operatoren bei Pointern
 geben immer den Pointer einer neuen Variable zurück,
-die 1 für true oder 0 für false enthält.
+die eins für true oder null für false enthält.
 
 ```
 // a -> A, b -> B
