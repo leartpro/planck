@@ -1,12 +1,16 @@
 # planck
+
 ## die Idee von planck
+
 Planck ist darauf ausgelegt, den Ansprüchen der algorithmischen Programmierung gerecht zu werden
 und dabei möglichst lightweight zu bleiben.
 Daher auch der Name, denn eine Planck-Einheit beziehungsweise länge,
 ist in der physik die kleinste theoretische länge die möglich ist.
+
 ## Daten, Variablen und Werte
 
 ### Werte
+
 ```
 a* // Wert von a
 ```
@@ -37,6 +41,7 @@ b* = 'b' // Wert von 98
 c* = a* + b* // Wert von 100 
 d* = c* + 200 // Wert von 44, wegen overflow
 ```
+
 <!--
     01100100 + 11001000 = 01|00101100
     100      +      200 =   |44
@@ -45,8 +50,8 @@ d* = c* + 200 // Wert von 44, wegen overflow
 ### Pointer
 
 Die Variable a ist ein Pointer auf eine Variable,
-die einen Wert (hier den von a*) enthält. 
-Die Variable b kann hier ebenfalls auf eine Variable verweisen. 
+die einen Wert (hier den von a*) enthält.
+Die Variable b kann hier ebenfalls auf eine Variable verweisen.
 
 ```
 a* // Wert von a
@@ -86,7 +91,7 @@ a = "abc"
 Der Pointer den a dabei vorher besaß,
 wird also verworfen und durch einen neuen Pointer ersetzt.
 
-Genau das gleiche Prinzip kann mit Zahlen angewendet werden. 
+Genau das gleiche Prinzip kann mit Zahlen angewendet werden.
 Wenn a also 2 zugewiesen wird,
 wird a einem neuen Pointer zugewiesen,
 der auf eine Variable A zeigt, die den Wert 2 enthält.
@@ -114,6 +119,7 @@ mit diesem Wert rechnen und in eine neue Kette verteilen.
 Der Pointer dieser Kette wird dann zurückgegeben.
 Operatoren können niemals die Werte verändern in den Variablen,
 sondern nur neue Ketten zurückgegeben.
+
 ```
 a = 2 // a -> A: {00000010} ->
 b = 3 // b -> B: {00000011} -> 
@@ -147,6 +153,7 @@ a = {b* + 12 + 'b'} // erweitertes Beispiel
 ```
 
 Verändernde Operatoren/Operationen für Pointer am Beispiel a -> A, b -> B, c -> C:
+
 ```
 a << b // An A wird B angehängt,
        // die letzte Variable in der Kette von B wird zurückgegeben,
@@ -209,7 +216,7 @@ a* &&= 234 // a* = a* && 234
 
 Da der verändernde Operator '<<'
 den Pointer der hintersten Variable in der Kette des zweiten Operanden zurückgibt,
-kann dieser auch als zuweisungsoperator verwendet werden. 
+kann dieser auch als zuweisungsoperator verwendet werden.
 
 ```
 // a -> A
@@ -251,6 +258,10 @@ Als Bedingung darf ein Wert oder ein Pointer verwendet werden.
 Ist der Wert nicht 0 oder der gesamte Wert der Kette des Pointers nicht 0,
 wird die Bedingung erfüllt, ansonsten nicht.
 
+Beispiel für eine erfüllende Bedingung: 10100000
+
+Beispiel für eine nicht erfüllende Bedingung: {00000000} -> {00000000} -> {00000000} ->
+
 ### If, elif und else
 
 Ein Beispiel:
@@ -266,8 +277,94 @@ if a* == 'a' {
 ```
 
 Ohne Klammern, darf auch ein if alleine stehen:
+
 ```
 if (a << b)* == 'a' a << c
 ```
 
 ## Funktionen
+
+## Reference Manual
+
+| nonterminal      | syntax                                                                                                 | description                                                 |
+|------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
+| *Statement*      | *EmptyStatement*<br/>*Expression*<br/>*VariableAssignment*<br/>*ControlFlow*<br/>*FunctionDeclaration* | The planck language exclusively consists *Statement*s       |
+| *EmptyStatement* |                                                                                                        | An empty line consisting of only whitespace and/or comments |
+
+### PointerReference and ValueReference
+
+| nonterminal        | syntax                | description                                                                                     | Example |
+|--------------------|-----------------------|-------------------------------------------------------------------------------------------------|---------|
+| *PointerReference* |                       | A Variable that has a pointer                                                                   | `a`     |
+| *ValueReference*   | *PointerReference*`*` | The Value of a Variable, no whitespace is allowed in between the *PointerReference* and the `*` | `a*`    |
+
+### Expression
+
+| nonterminal                 | syntax                                    | description    |
+|-----------------------------|-------------------------------------------|----------------|
+| *Expression*                | *PointerExpression*<br/>*ValueExpression* | any Expression |
+
+#### PointerExpression
+
+| nonterminal                   | syntax                                                                                                                         | description                               |
+|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
+| *PointerExpression*           | *PointerReference*<br/>*PointerLiteral*<br/> `{`*ValueExpression* `}`<br/> `(` *PointerExpression* `)`<br/> *PointerOperation* | An expression with the value of a pointer |
+| *PointerOperation*            | *PointerExpression* *PointerOperator* *PointerExpression*<br/>                                                                 |                                           |
+| *TwoOperandsPointerOperation* | *PointerExpression* *TwoOperandsPointerOperator* *PointerExpression*<br/>                                                      |                                           |
+| *TwoOperandsPointerOperator*  |                                                                                                                                |                                           |
+| *OneOperandPointerOperation*  | *OneOperandPointerOperator* *PointerExpression*                                                                                |                                           |
+| *OneOperandPointerOperator*   |                                                                                                                                |                                           |
+| *PointerLiteral*              | *PointerNumber* <br/> *PointerString*                                                                                          |                                           |
+
+### Werte
+
+#### Wert schreibweise
+
+Regex eines Variablen Wertes: `WERT = [a-zA-Z_]+\*`
+
+#### Wert zuweisung
+
+[Wert]
+
+#### Nummern
+
+Eine Wert nummer kann von 0 bis 255 sein.
+
+#### Zeichen
+
+Ein Char, den man einen Wert zuweisen kann, wird als `'[char]'` geschrieben,
+wobei char für den konkreten char steht.
+
+`[char]` kann sein:
+
+```
+()[]{}.,:;!?*~+-_"`><=@/^|#$
+0123456789
+abcdefghijklmnopqrstuvxyz
+ABCDEFGHIJKLMNOPQRSTUVXYZ
+```
+
+Ausnahmen:
+
+| Zeichen | Name                        | Darstellung im Quellcode |
+|:--------|-----------------------------|--------------------------|
+| \       | Backslash                   | `'\\'`                   |
+| '       | Einzelnes Anführungszeichen | `'\''`                   |
+|         | ANSI Escape                 | `'\e'`                   |
+|         | Zeilenumbruch               | `'\n'`                   |
+|         | Leerzeichen                 | `' '`                    |
+
+### Pointer
+
+Regex einer Variable: `[a-zA-Z_]+`
+
+### Reservierte Pointer
+
+| Name   | Bedeutung                                                         | Erlaubte operationen                                                                                                                      |
+|--------|-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| stdout | Etwas in die Konsole ausgeben (stdout)                            | `<<=` etwas an stdout anhängen und damit ausgeben                                                                                         |
+| stderr | Etwas in die Konsole ausgeben (stderr)                            | `<<=` etwas an stderr anhängen und damit ausgeben                                                                                         |
+| stdin  | Überprüfen ob ein char eingegeben wurde und lese dann diesen char | `?>` überprüfen ob ein neuer char eingegangen ist <br/> `=>>` zum nächsten char gehen <br/> `stdin*` (nur lesen) lesen des nächsten chars |
+| os     |                                                                   | `os* = [code]` das Program beenden mit dem gegebenen code                                                                                 | 
+
+
