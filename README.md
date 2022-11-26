@@ -2,7 +2,7 @@
 
 ## die Idee von planck
 
-Planck ist darauf ausgelegt, 
+Planck ist darauf ausgelegt,
 den Ansprüchen der algorithmischen Programmierung gerecht zu werden
 und dabei möglichst lightweight zu bleiben.
 Daher auch der Name planck, denn eine Planck-Einheit beziehungsweise Länge,
@@ -38,6 +38,7 @@ Dabei darf ein Wert nie größer als ein Byte sein.
 Es können daher nur positive ganze Zahlen von 0 bis 255,
 so wie einzelne Zeichen z.B. 'a' dargestellt werden.
 Die Zuweisung von größeren Zahlen oder Zeichenketten wirft einen Syntaxfehler.
+
 ```
 a* = 312 //Fehler
 a* = "Hallo" //Fehler
@@ -64,8 +65,8 @@ Dabei wird der Ascii-Wert, des Zeichen, genommen.
 ### Pointer
 
 Die Variable a ist ein Pointer auf eine Variable,
-die einen Wert (hier den von a*) enthält. 
-Dabei kann die Variable b hier ebenfalls auf eine Variable verweisen. 
+die einen Wert (hier den von a*) enthält.
+Dabei kann die Variable b hier ebenfalls auf eine Variable verweisen.
 
 ```
 a* // Wert von a
@@ -73,7 +74,7 @@ a // Pointer von a
 a << b // a zeigt auf b, beziehungsweise wird b an a angehängt
 ```
 
-Wenn a auf eine Variable zeigt und b auf a gesetzt wird, 
+Wenn a auf eine Variable zeigt und b auf a gesetzt wird,
 zeigt b ebenfalls auf diese Variable.
 Wenn der Wert dieser Variable anhand der Referenz in b (mit b*) geändert wird,
 enthält a* den gleichen Wert (hier 'a').
@@ -106,7 +107,7 @@ a = "abc"
 Der Pointer den a dabei vorher besaß,
 wird also verworfen und durch einen neuen Pointer ersetzt.
 
-Genau das gleiche Prinzip kann auf Zahlen angewendet werden. 
+Genau das gleiche Prinzip kann auf Zahlen angewendet werden.
 Wenn einer Variable ein Wert zugewiesen wird,
 wird dieser Variable ein neuer Pointer zugewiesen.
 Dieser zeigt auf eine Variable, welche den zugewiesenen Wert enthält.
@@ -119,46 +120,15 @@ a = 312 // a -> B: {01111111} -> {10111001} ->
 a = "hallo" // a -> D: {01101000} -> {01100001} -> {01101100} -> {01101100} -> {01101111} ->
 ```
 
-Auch Fließkommazahlen können so erzeugt werden:
+Fließkommazahlen sind nicht möglich.
+Festkommazahlen können so erzeugt werden:
 
 ```
 a = 0.3
 b = 0.4
 ```
-## Operatoren
 
-| Operator      | Name                     | Bedeutung                                      |
-|---------------|--------------------------|------------------------------------------------|
-| a             | Initialisierungsoperator | Standard Initialisierung mit einem leeren Byte |
-| a = {\<Wert>} |                          |                                                |
-| a << b        |                          |                                                |
-| a,b,c << d    |                          |                                                |
-| a = b         |                          |                                                |
-| a <<= b       |                          |                                                |
-| a >>          |                          |                                                |
-| a <\          |                          |                                                |
-| a ?>          |                          |                                                |
-| a === b       |                          |                                                |
-| a !== b       |                          |                                                |
-| a == b        |                          |                                                |
-| a != b        |                          |                                                |
-| a < b         |                          |                                                |
-| a > b         |                          |                                                |
-| a <= b        |                          |                                                |
-| a >= b        |                          |                                                |
-| a + b         |                          |                                                |
-| a - b         |                          |                                                |
-| a * b         |                          |                                                |
-| a / b         |                          |                                                |
-| a ~* b        |                          |                                                |
-| a ~/ b        |                          |                                                |
-| -a            |                          |                                                |
-| a +=          |                          |                                                |
-| a -= b        |                          |                                                |
-| a *= b        |                          |                                                |
-| a /= b        |                          |                                                |
-| a  ~*= b      |                          |                                                |
-| a ~/= b       |                          |                                                |
+## Operatoren
 
 ### Operatoren von Pointern
 
@@ -358,12 +328,49 @@ if (a << b)* == 'a' a << c
 | nonterminal                   | syntax                                                                                                                         | description                               |
 |-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
 | *PointerExpression*           | *PointerReference*<br/>*PointerLiteral*<br/> `{`*ValueExpression* `}`<br/> `(` *PointerExpression* `)`<br/> *PointerOperation* | An expression with the value of a pointer |
-| *PointerOperation*            | *PointerExpression* *PointerOperator* *PointerExpression*<br/>                                                                 |                                           |
+| *PointerOperation*            | *TwoOperandsPointerOperation*  <br/> *PrefixPointerOperation* <br/> *PostfixPointerOperation*                                  |                                           |
 | *TwoOperandsPointerOperation* | *PointerExpression* *TwoOperandsPointerOperator* *PointerExpression*<br/>                                                      |                                           |
 | *TwoOperandsPointerOperator*  |                                                                                                                                |                                           |
-| *OneOperandPointerOperation*  | *OneOperandPointerOperator* *PointerExpression*                                                                                |                                           |
-| *OneOperandPointerOperator*   |                                                                                                                                |                                           |
-| *PointerLiteral*              | *PointerNumber* <br/> *PointerString*                                                                                          |                                           |
+| *PrefixPointerOperation*      | *PrefixPointerOperator* *PointerExpression*                                                                                    |                                           |
+| *PrefixPointerOperator*       |                                                                                                                                |                                           |
+| *PostfixPointerOperation*     | *PointerExpression* *PostfixPointerOperator*                                                                                   |                                           |
+| *PostfixPointerOperator*      |                                                                                                                                |                                           |
+| *PointerLiteral*              | *PointerString* <br/> *PointerWholeNumber* <br/> *PointerFixedPointNumber*                                                     |                                           |
+
+#### TwoOperandsPointerOperator
+
+a -> A, b -> B
+
+| operator             | precedence | operator name                    | description                                         |
+|----------------------|------------|----------------------------------|-----------------------------------------------------|
+| `a * b`              | 10         | multiplication                   | multiplication for only full numbers                |
+| `a / b`              | 10         | division                         | division for only full numbers                      |
+| `a ~* b`             | 10         | multiply for fixed point numbers | multiplication for only fixed point numbers         |
+| `a ~/ b`             | 10         | divide for fixed point numbers   | division for only fixed point numbers               |
+| `a + b`, `a - b`     | 9          | addition, subtraction            | addition for numbers                                |
+| `a << b`             | 8          | link                             | link A to B, return the last pointer of the B chain |
+| `a < b`, `a > b`     | 7          | is-less, is-greater              |                                                     |
+| `a <= b`, `a >= b`   | 7          | smaller/greater or equals        |                                                     |
+| `a === b`, `a !== b` | 6          | strict equals, strict not equals |                                                     |
+| `a == b`, `a != b`   | 6          | equals, not equals               |                                                     |
+| `a && b`             | 5          | and                              |                                                     |
+| `a &#124;&#124; b`   | 4          | or                               |                                                     |                               |             | 
+| `a ^ b`              | 4          | xor                              |                                                     | 
+
+#### PrefixPointerOperator
+
+| Operator      | operator name | Bedeutung |
+|---------------|---------------|-----------|
+| `-a`            | negate        |           |
+| `!a`            | not           |           |
+
+#### PostfixPointerOperator
+
+| Operator | Name    | Bedeutung                                      |
+|----------|---------|------------------------------------------------|
+| `a >>`   | next    |                                                |
+| `a <\ `  | unlink  |                                                |
+| `a ?>`   | is-next |                                                |
 
 ### Werte
 

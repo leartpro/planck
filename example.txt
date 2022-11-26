@@ -203,5 +203,18 @@ loop i =>> l {
 i++
 }
 
+OPTIMIERUNGEN:
+Alle Werte haben 64Bit für den User
+    - Eigentlich passen sie sich aber von 8Bit bis 64Bit dynamisch an
+    - z.B. Bei Strings muss daher nicht pro Char 64 Bit gespeichert werden
+    - Bei sowas wie stdout << "Hello World" kann optimiert werden
+      so kann hier die Pointerkette weggelassen werden
+    - Wenn nur der Wert benutzt wird (z.B. a*) und nie der Pointer a, muss der Pointer nie erstellt werden
+      daher wird ein Pointer erst erstellt, wenn er benutzt wird und nicht bei der erstellung des Wertes
+    -
 
-
+Für weitere Versionen:
+    - Multipointer a[] = {a,b,c} //a zeigt auf mehrere Pointer
+    - graphical user interface (https://www.quora.com/How-do-I-build-my-own-GUI-framework-from-scratch?share=1)
+    - Hexdezimale Werte zuweisen
+    - mehrere Assigments in einer Zeile z.B. a,b,c = d
