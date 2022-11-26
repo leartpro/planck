@@ -34,33 +34,28 @@ a* = 7
 b* = 'p'
 ```
 
-Dabei darf ein Wert nie größer als ein Byte sein.
-Es können daher nur positive ganze Zahlen von 0 bis 255,
+Dabei darf ein Wert nie größer als ein 64Bit sein.
+Es können daher nur ganze Zahlen und Festkommazahlen,
 so wie einzelne Zeichen z.B. 'a' dargestellt werden.
-Die Zuweisung von größeren Zahlen oder Zeichenketten wirft einen Syntaxfehler.
+Die Zuweisung von größeren Zahlen oder von Zeichenketten wirft einen Syntaxfehler.
+Sollte die Zuweisung einer zu großen Zahl innerhalb der Laufzeit passieren (z.B. durch eine Rechenoperation),
+wird ein Laufzeitfehler geworfen.
+Die Größe eines Wertes passt sich dabei dynamisch im Memory bis maximal 64Bit an.
 
 ```
-a* = 312 //Fehler
+a* = 2^65 //Fehler
 a* = "Hallo" //Fehler
 ```
 
-Beim Rechnen mit Werten muss erneut beachtet werden,
-dass das Rechenergebnis nicht größer als ein Byte sein darf.
-
 ```
-a* = 2
+a* = 2 //Wert von 2
 b* = 'b' // Wert von 98
 c* = a* + b* // Wert von 100 
-d* = c* + 200 // Fehler, da der Wert der Rechnung (300) größer ist als ein Byte (255)
+d* = c* + 200 // Wert von 300
 ```
 
-<!--
-    01100100 + 11001000 = 01|00101100
-    100      +      200 =   |44
--->
-
 Wie dem Beispiel zu entnehmen ist, können Zeichen mit Zahlen verrechnet werden.
-Dabei wird der Ascii-Wert, des Zeichen, genommen.
+Dabei wird der Ascii-Wert des Zeichens betrachtet.
 
 ### Pointer
 
