@@ -278,6 +278,66 @@ loop a* > 0 {
 ```
 
 ## Funktionen
+{
+asdf*
+
+{
+i
+
+}
+
+{
+i
+asdf
+}
+}
+
+
+loop {
+a //a = {0}
+
+}
+
+- Function Syntax:
+```
+add: {
+$0* + $1*
+}
+```
+- gibt ken scope
+- -expression scope, block scope, function scope, file scope, module scope, global scope
+- Parameter-Loop
+  - gibt es in functions für die parameter
+  - gibt es außerhalb der functions für klassenargumente
+  - 
+```
+
+add: {
+$0* + $1*
+}
+
+<name>: {
+
+parameterloop {
+parameterloop {
+}
+}
+$
+...
+submit
+...
+return
+}
+}
+```
+
+## Import
+
+```
+#import<List>
+
+imports <<= "import.planck" :-(
+```
 
 ## Reference Manual
 
@@ -328,7 +388,16 @@ a -> A, b -> B
 
 #### StringLiteral
 
-Ein String literal wird mit einem " angefangen und terminiert.
+Ein String literal wird mit einem " angefangen und terminiert. 
+
+Ausnahmen:
+
+| Zeichen | Name                        | Darstellung im Quellcode |
+|---------|-----------------------------|--------------------------|
+| \       | Backslash                   | `"\\"`                   |
+| '       | Einzelnes Anführungszeichen | `"\""`                   |
+|         | ANSI Escape                 | `"\e"`                   |
+|         | Zeilenumbruch               | `"\n"`                   |
 
 #### ValueExpression
 | nonterminal            | syntax                                                                                                                                                      | description                                                 |
