@@ -242,3 +242,5 @@ Für weitere Versionen:
 -stdout für zahlen
 -iterator als loop condition
 -submit gibt 'zwischenergebnis' zurück
+
+-scope: function scope, file scope, module scope, global scope
