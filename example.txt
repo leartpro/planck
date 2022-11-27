@@ -232,3 +232,13 @@ Für weitere Versionen:
     - mehrere Assigments in einer Zeile z.B. a,b,c = d
     - unsigned/signed einführen für größeren positiven zahlenbereich
       wie Festkommazahlen wird erst bei der Behandlung der Zahlen unterschieden (kein Keyword)
+
+- Function Pointer
+-Label Pointer
+-parameterloop
+-functionloop
+-klassenargumente mit parameter loop
+-mehr mit os machen (z.b Systeminformationen abfragen o.ä)
+-stdout für zahlen
+-iterator als loop condition
+-submit gibt 'zwischenergebnis' zurück
