@@ -244,3 +244,15 @@ Für weitere Versionen:
 -submit gibt 'zwischenergebnis' zurück
 
 -scope: function scope, file scope, module scope, global scope
+
+-Jeder Pointer hat einen Wert und jeder Wert kann einen Pointer haben:
+    so hat a immer ein a* womit man auf den ersten Wert der Kette zugreifen kann
+    und b* kann einen pointer b haben, muss ihn aber nicht zwangsweise besitzen
+    (z.B. wenn nie der pointer von b* gebraucht wird, wird dieser auch nie erstellt)
+-pointer werden erst erstellt, wenn sie benutzt werden
+so wird bei:
+a* = 3
+b* = 4
+c* = 5
+c << b
+nie ein pointer für a* erstellt
