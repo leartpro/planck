@@ -59,6 +59,7 @@ Dabei wird der Ascii-Wert des Zeichens betrachtet.
 
 Der Wertebereich von Fließkommazahlen liegt zwischen -2^53Bit und +2^53Bit.
 Die maximale Anzahl an Nachkommastellen beträgt dabei 17.
+
 ```
 a* = 304.2389457
 ```
@@ -107,7 +108,6 @@ a = "abc"
 
 Der Pointer den a dabei vorher besaß,
 wird also verworfen und durch einen neuen Pointer ersetzt.
-
 
 ## Operatoren
 
@@ -278,6 +278,7 @@ loop a* > 0 {
 ```
 
 ## Funktionen
+
 {
 asdf*
 
@@ -292,24 +293,26 @@ asdf
 }
 }
 
-
 loop {
 a //a = {0}
 
 }
 
 - Function Syntax:
+
 ```
 add: {
 $0* + $1*
 }
 ```
+
 - gibt ken scope
 - -expression scope, block scope, function scope, file scope, module scope, global scope
 - Parameter-Loop
-  - gibt es in functions für die parameter
-  - gibt es außerhalb der functions für klassenargumente
-  - 
+    - gibt es in functions für die parameter
+    - gibt es außerhalb der functions für klassenargumente
+    -
+
 ```
 
 add: {
@@ -341,14 +344,13 @@ imports <<= "import.planck" :-(
 
 ## Reference Manual
 
-| nonterminal      | syntax                                                                                         | description                                                 |
-|------------------|------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
-| *Statement*      | *EmptyStatement*<br/>*Expression*<br/>*Assignment*<br/>*ControlFlow*<br/>*FunctionDeclaration* | The planck language exclusively consists *Statement*s       |
-| *EmptyStatement* |                                                                                                | An empty line consisting of only whitespace and/or comments |
+| nonterminal      | syntax                                                                                         | description                                                                                                              |
+|------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| *Statements*     | *Statement* `\n `*Statement* `\n` ...                                                          | A planck language file exclusively consists of the *Statements* nonterminal, *Statement*s are separated only by newlines |
+| *Statement*      | *EmptyStatement*<br/>*Expression*<br/>*Assignment*<br/>*ControlFlow*<br/>*FunctionDeclaration* | A *Statement* can span multiple lines                                                                                    |
+| *EmptyStatement* |                                                                                                | An empty line consisting of only whitespace and/or comments                                                              |
 
 ### PointerReference and ValueReference
-
-
 
 | nonterminal        | syntax                            | description                                                                                     | Example |
 |--------------------|-----------------------------------|-------------------------------------------------------------------------------------------------|---------|
@@ -378,7 +380,6 @@ a -> A, b -> B
 |----------|------------|----------------------------------|-----------------------------------------------------|
 | `a << b` | 8          | link                             | link A to B, return the last pointer of the B chain |
 
-
 #### PostfixPointerOperator
 
 | Operator | Name    | Bedeutung                                      |
@@ -388,7 +389,7 @@ a -> A, b -> B
 
 #### StringLiteral
 
-Ein String literal wird mit einem " angefangen und terminiert. 
+Ein String literal wird mit einem " angefangen und terminiert.
 
 Ausnahmen:
 
@@ -400,13 +401,13 @@ Ausnahmen:
 |         | Zeilenumbruch               | `"\n"`                   |
 
 #### ValueExpression
+
 | nonterminal            | syntax                                                                                                                                                      | description                                                 |
 |------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
 | *ValueExpression*      | *ValueReference* <br/> *ValueOperation* <br/> *ValuePrefixOperation* <br/> `(` *ValueExpression* `)`<br/> *ConditionalPointerOperator* <br/> *ValueLiteral* |                                                             |
 | *ValueOperation*       | *ValueExpression* *ValueOperator* *ValueExpression*                                                                                                         |                                                             |
 | *ValuePrefixOperation* | *ValuePrefix* *ValueExpression*                                                                                                                             | Between prefix and the expression, no whitespace is allowed |
 | *ValueLiteral*         | *Character* <br/> *Number* <br/> *FloatingPointNumber* <br/> *HexUnsignedNumber*                                                                            |                                                             |
-
 
 #### ConditionalPointerOperator
 
@@ -448,21 +449,21 @@ Otherwise, the literal is interpreted as an integer number.
 
 Regex eines Variablen Wertes: `WERT = ` <!--TO-DO: testen -->
 
-| operator           | precedence | operator name                       | description                                 |
-|--------------------|------------|-------------------------------------|---------------------------------------------|
-| `a * b`            | 10         | multiplication                      | multiplication for only full numbers        |
-| `a / b`            | 10         | division                            | division for only full numbers              |
-| `a % b`            | 10         | modulo                              |                                             |
-| `a ~* b`           | 10         | multiply for fixed point numbers    | multiplication for only fixed point numbers |
-| `a ~/ b`           | 10         | divide for fixed point numbers      | division for only fixed point numbers       |
-| `a + b`, `a - b`   | 9          | addition, subtraction               | addition for numbers                        |
-| `a ~+ b`, `a ~- b` | 9          | floating point addition/subtraction | addition for numbers                        |
-| `a < b`, `a > b`   | 7          | is-less, is-greater                 |                                             |
-| `a <= b`, `a >= b` | 7          | smaller/greater or equals           |                                             |
-| `a == b`, `a != b` | 6          | equals, not equals                  |                                             |
-| `a && b`           | 5          | and                                 |                                             |
-| `a &#124;&#124; b` | 4          | or                                  |                                             |    
-| `a ^ b`            | 4          | xor                                 |                                             | 
+| operator               | precedence | operator name                       | description                                 |
+|------------------------|------------|-------------------------------------|---------------------------------------------|
+| `a* * b*`              | 10         | multiplication                      | multiplication for only full numbers        |
+| `a* / b*`              | 10         | division                            | division for only full numbers              |
+| `a* % b*`              | 10         | modulo                              |                                             |
+| `a* ~* b*`             | 10         | multiply for fixed point numbers    | multiplication for only fixed point numbers |
+| `a* ~/ b*`             | 10         | divide for fixed point numbers      | division for only fixed point numbers       |
+| `a* + b*`, `a* - b*`   | 9          | addition, subtraction               | addition for numbers                        |
+| `a* ~+ b*`, `a* ~- b*` | 9          | floating point addition/subtraction | addition for numbers                        |
+| `a* < b*`, `a* > b*`   | 7          | is-less, is-greater                 |                                             |
+| `a* <= b*`, `a* >= b*` | 7          | smaller/greater or equals           |                                             |
+| `a* == b*`, `a* != b*` | 6          | equals, not equals                  |                                             |
+| `a* && b*`             | 5          | and                                 |                                             |
+| `a* &#124;&#124; b*`   | 4          | or                                  |                                             |    
+| `a* ^ b*`              | 4          | xor                                 |                                             | 
 
 #### ValuePrefix
 
@@ -472,7 +473,6 @@ Regex eines Variablen Wertes: `WERT = ` <!--TO-DO: testen -->
 | `!a*`    | not           |           |
 
 ### Assignment
-
 
 | nonterminal  | syntax                                      | description |
 |--------------|---------------------------------------------|-------------|
@@ -486,9 +486,11 @@ Regex eines Variablen Wertes: `WERT = ` <!--TO-DO: testen -->
 
 #### ValueAssignmentOperator
 
-| Operator | operator name | Bedeutung |
-|----------|---------------|-----------|
-| `=`      | assigment     |           |
+A ValueAssignmentOperator can be `=` to directly assign a ValueExpression to a value.
+A ValueAssignmentOperator can also assign the result of a non-comparing ValueOperator,
+by combining the ValueOperator with an equals. Examples include: `+=`, `-=`, etc.
+
+As mentioned, the comparing ValueOperators `<`, `>`, `<=`, `>=`, `==` and `!=` are excluded.
 
 #### PointerAssignment
 
@@ -498,16 +500,42 @@ Regex eines Variablen Wertes: `WERT = ` <!--TO-DO: testen -->
 
 #### PointerAssignmentOperator
 
-| Operator  | operator name                               | Bedeutung |
-|-----------|---------------------------------------------|-----------|
-| `a = b`   | assigment                                   |           |
-| `a <<= b` | link and assigment to last of complete link |           |
+`a -> A, b -> B, B -> C -> D`
+
+a << b << c
+
+| Operator  | operator name                               | Bedeutung                                                                               |
+|-----------|---------------------------------------------|-----------------------------------------------------------------------------------------|
+| `a = b`   | assigment                                   | a now references the Variable that b references, a === b now                            |
+| `a <<= b` | link and assigment to last of complete link | the variable A is linking to B, and a now is set to the last Variable in the B chain, D |
 
 #### PointerSelfAssigmentOperator
 
-| Operator  | operator name     | Bedeutung |
-|-----------|-------------------|-----------|
-| `a =>>`   | assigment to next |           |
+a -> A, A -> B
+
+| Operator  | operator name     | Bedeutung              |
+|-----------|-------------------|------------------------|
+| `a =>>`   | assigment to next | a is now pointing to B |
+
+### ControlFlow
+
+| nonterminal   | syntax            | description |
+|---------------|-------------------|-------------|
+| *ControlFlow* | *If* <br/> *Loop* |             |
+
+#### If
+
+| nonterminal      | syntax                                                                                                         | description |
+|------------------|----------------------------------------------------------------------------------------------------------------|-------------|
+| *If*             | `if` *ValueExpression* `:` *Statement*<br/> `if` *ValueExpression* `{` *Statements* `}` *IfContinuation*       |             |
+| *IfContinuation* | `elsif` *ValueExpression* `{` *Statements* `}` *IfContinuation*<br/>`else` `{` *Statements* `}`<br/>*IfEnding* |             |
+| *IfEnding*       |                                                                                                                |             |
+
+#### Loop
+
+| nonterminal | syntax                                        | description |
+|-------------|-----------------------------------------------|-------------|
+| *Loop*      | `loop` *ValueExpression* `{` *Statements* `}` |             |
 
 #### Nummern
 
@@ -515,11 +543,6 @@ Ein Wert kann bei ganzen Zahlen von -2^64 bis 2^64 - 1 gehen.
 Bei Fließkommazahlen von -2^53 bis 2^53 mit 17 Nachkommastellen.
 
 #### Zeichen
-
-
-### Pointer
-
-Regex einer Variable: `[a-zA-Z_]+`
 
 ### Reservierte Pointer
 
@@ -529,5 +552,3 @@ Regex einer Variable: `[a-zA-Z_]+`
 | stderr | Etwas in die Konsole ausgeben (stderr)                            | `<<=` etwas an stderr anhängen und damit ausgeben                                                                                         |
 | stdin  | Überprüfen ob ein char eingegeben wurde und lese dann diesen char | `?>` überprüfen ob ein neuer char eingegangen ist <br/> `=>>` zum nächsten char gehen <br/> `stdin*` (nur lesen) lesen des nächsten chars |
 | os     | Programm beenden                                                  | `os* = [code]` das Program beenden mit dem gegebenen code                                                                                 | 
-
-
