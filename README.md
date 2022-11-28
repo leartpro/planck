@@ -279,27 +279,6 @@ loop a* > 0 {
 
 ## Funktionen
 
-{
-asdf*
-
-{
-i
-
-}
-
-{
-i
-asdf
-}
-}
-
-loop {
-a //a = {0}
-
-}
-
-- Function Syntax:
-
 ```
 add: {
 $0* + $1*
@@ -344,30 +323,35 @@ imports <<= "import.planck" :-(
 
 ## Reference Manual
 
-| nonterminal      | syntax                                                                                         | description                                                                                                              |
-|------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| *Statements*     | *Statement* `\n `*Statement* `\n` ...                                                          | A planck language file exclusively consists of the *Statements* nonterminal, *Statement*s are separated only by newlines |
-| *Statement*      | *EmptyStatement*<br/>*Expression*<br/>*Assignment*<br/>*ControlFlow*<br/>*FunctionDeclaration* | A *Statement* can span multiple lines                                                                                    |
-| *EmptyStatement* |                                                                                                | An empty line consisting of only whitespace and/or comments                                                              |
+| nonterminal      | syntax                                                               | description                                                                                                              |
+|------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| *Statements*     | *Statement* `\n `*Statement* `\n` ...                                | A planck language file exclusively consists of the *Statements* nonterminal, *Statement*s are separated only by newlines |
+| *Statement*      | *EmptyStatement*<br/>*Expression*<br/>*Assignment*<br/>*ControlFlow* | A *Statement* can span multiple lines                                                                                    |
+| *EmptyStatement* |                                                                      | An empty line consisting of only whitespace and/or comments                                                              |
 
 ### PointerReference and ValueReference
 
-| nonterminal        | syntax                            | description                                                                                     | Example |
-|--------------------|-----------------------------------|-------------------------------------------------------------------------------------------------|---------|
-| *PointerReference* | Regex: **(?![0-9])[a-zA-Z_0-9]+** | Variable reference of the pointer.                                                              | `a`     |
-| *ValueReference*   | *PointerReference*`*`             | The Value of a Variable, no whitespace is allowed in between the *PointerReference* and the `*` | `a*`    |
+| nonterminal                  | syntax                                                      | description                                                                                     | Example |
+|------------------------------|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------|---------|
+| *PointerReference*           | Regex: **(?![0-9])[a-zA-Z_0-9]+**<br/>*ParameterReference*  | Variable reference of the pointer. A capital *PointerReference* is exported. (maybe)            | `a`     |
+| *ValueReference*             | *PointerReference*`*`                                       | The Value of a Variable, no whitespace is allowed in between the *PointerReference* and the `*` | `a*`    |
+| *FunctionReference*          | Regex: **#[a-zA-Z_0-9]+**                                   | Reference of a function. A capital *FunctionReference* is exported. (maybe)                     |
+| *ParameterReference*         | *ExplicitParameterReference* <br/> *LoopParameterReference* |                                                                                                 |
+| *ExplicitParameterReference* | **$0**, **$1**, **$2**, **$3**                              |                                                                                                 |
+| *LoopParameterReference*     | Regex: **\$(?![0-9])[a-zA-Z_0-9]+**                         |                                                                                                 |
 
 ### Expression
 
-| nonterminal                 | syntax                                    | description    |
-|-----------------------------|-------------------------------------------|----------------|
-| *Expression*                | *PointerExpression*<br/>*ValueExpression* | any Expression |
+| nonterminal  | syntax                                    | description    |
+|--------------|-------------------------------------------|----------------|
+| *Expression* | *PointerExpression*<br/>*ValueExpression* | any Expression |
+
 
 #### PointerExpression
 
 | nonterminal                   | syntax                                                                                                                          | description                               |
 |-------------------------------|---------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
-| *PointerExpression*           | *PointerReference*<br/> `{`*ValueExpression* `}`<br/> `(` *PointerExpression* `)`<br/> *PointerOperation* <br/> *StringLiteral* | An expression with the value of a pointer |
+| *PointerExpression*           | *PointerReference*<br/> `[`*ValueExpression* `]`<br/> `(` *PointerExpression* `)`<br/> *PointerOperation* <br/> *StringLiteral* | An expression with the value of a pointer |
 | *PointerOperation*            | *TwoOperandsPointerOperation*  <br/> *PostfixPointerOperation*                                                                  |                                           |
 | *TwoOperandsPointerOperation* | *PointerExpression* *TwoOperandsPointerOperator* *PointerExpression*<br/>                                                       |                                           |
 | *PostfixPointerOperation*     | *PointerExpression* *PostfixPointerOperator*                                                                                    |                                           |
@@ -519,23 +503,39 @@ a -> A, A -> B
 
 ### ControlFlow
 
-| nonterminal   | syntax            | description |
-|---------------|-------------------|-------------|
-| *ControlFlow* | *If* <br/> *Loop* |             |
+| nonterminal   | syntax                                                           | description |
+|---------------|------------------------------------------------------------------|-------------|
+| *ControlFlow* | *If* <br/> *Loop*<br/>*Function*<br/>*ParameterLoop*<br/>*Block* |             |
+| *Block*       | `{` *Statements* `}`                                             |             |
 
 #### If
 
-| nonterminal      | syntax                                                                                                         | description |
-|------------------|----------------------------------------------------------------------------------------------------------------|-------------|
-| *If*             | `if` *ValueExpression* `:` *Statement*<br/> `if` *ValueExpression* `{` *Statements* `}` *IfContinuation*       |             |
-| *IfContinuation* | `elsif` *ValueExpression* `{` *Statements* `}` *IfContinuation*<br/>`else` `{` *Statements* `}`<br/>*IfEnding* |             |
-| *IfEnding*       |                                                                                                                |             |
+| nonterminal      | syntax                                                                                      | description |
+|------------------|---------------------------------------------------------------------------------------------|-------------|
+| *If*             | `if` *ValueExpression* `:` *Statement*<br/> `if` *ValueExpression* *Block* *IfContinuation* |             |
+| *IfContinuation* | `elsif` *ValueExpression* *Block* *IfContinuation*<br/>`else` *Block* <br/>*IfEnding*       |             |
+| *IfEnding*       |                                                                                             |             |
 
 #### Loop
 
-| nonterminal | syntax                                        | description |
-|-------------|-----------------------------------------------|-------------|
-| *Loop*      | `loop` *ValueExpression* `{` *Statements* `}` |             |
+| nonterminal    | syntax                           | description |
+|----------------|----------------------------------|-------------|
+| *Loop*         | `loop` *ValueExpression* *Block* |             |
+
+#### Function
+
+| nonterminal          | syntax                                             | description                                                                                                                  |
+|----------------------|----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| *Function*           | *FunctionDefinition* <br/>*FunctionCall*           |                                                                                                                              |
+| *FunctionDefinition* | *FunctionReference* *Block*                        |                                                                                                                              |
+| *FunctionCall*       | *FunctionReference* `(`*FunctionParameter*, ...`)` | call a referenced function, a function can be referenced, if it is referenced inside of the referenced function, or the same |
+| *FunctionParameter*  | *Expression*                                       | If the Expression is not a Pointer it becomes one ez gg deez nuts                                                            |
+
+#### ParameterLoop
+
+| nonterminal     | syntax                           | description |
+|-----------------|----------------------------------|-------------|
+| *ParameterLoop* | *LoopParameterReference* *Block* |             |
 
 #### Nummern
 
@@ -546,9 +546,16 @@ Bei Fließkommazahlen von -2^53 bis 2^53 mit 17 Nachkommastellen.
 
 ### Reservierte Pointer
 
-| Name   | Bedeutung                                                         | Erlaubte operationen                                                                                                                      |
-|--------|-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| stdout | Etwas in die Konsole ausgeben (stdout)                            | `<<=` etwas an stdout anhängen und damit ausgeben                                                                                         |
-| stderr | Etwas in die Konsole ausgeben (stderr)                            | `<<=` etwas an stderr anhängen und damit ausgeben                                                                                         |
-| stdin  | Überprüfen ob ein char eingegeben wurde und lese dann diesen char | `?>` überprüfen ob ein neuer char eingegangen ist <br/> `=>>` zum nächsten char gehen <br/> `stdin*` (nur lesen) lesen des nächsten chars |
-| os     | Programm beenden                                                  | `os* = [code]` das Program beenden mit dem gegebenen code                                                                                 | 
+| Name     | Bedeutung                                                                                                      | Erlaubte operationen                                                                                                                      |
+|----------|----------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| stdout   | Etwas in der Konsole ausgeben (stdout)                                                                         | `<<=` etwas an stdout anhängen und damit ausgeben                                                                                         |
+| stderr   | Etwas in der Konsole ausgeben (stderr)                                                                         | `<<=` etwas an stderr anhängen und damit ausgeben                                                                                         |
+| stdnum   | Etwas in der Konsole ausgeben, jeder Pointer der hinzugefügt wird, wird als signed Integer ausgegeben (stdout) | `<<=` etwas an stdout anhängen und damit ausgeben                                                                                         |
+| stdfloat | Etwas in der Konsole ausgeben, jeder Pointer der hinzugefügt wird, wird als signed Float ausgegeben (stdout)   | `<<=` etwas an stdout anhängen und damit ausgeben                                                                                         |
+| stdin    | Überprüfen ob ein char eingegeben wurde und lese dann diesen char                                              | `?>` überprüfen ob ein neuer char eingegangen ist <br/> `=>>` zum nächsten char gehen <br/> `stdin*` (nur lesen) lesen des nächsten chars |
+| os       | Programm beenden                                                                                               | `os* = [code]` das Program beenden mit dem gegebenen code                                                                                 | 
+
+Unsere Einigung:
+loop a =>> {
+<Statement>
+}

@@ -256,3 +256,92 @@ b* = 4
 c* = 5
 c << b
 nie ein pointer für a* erstellt
+
+do-while loop
+
+-procedure: #<name> { ...}
+-aufruf procedure #name(parameter1, parameter2,...)
+-parameter-loop: $<name(optional)> { Statement }
+- die aktuelle datei ist die #main procedure
+=> man kann die main methode rekursiv mit #main(...) rufen
+- in einer procedure dürfen weitere procedure definiert werden
+- in einer procedure darf nicht eine weitere procedure definiert werden mit dem gleichen namen
+=> keine procedure mit dem namen #main darf definiert werden
+-submit und return mit functionloop in v2
+-submit ist wie return nur ohne abbruch // in v2
+-die parameter einer procedure werden, wenn sie noch keine sind, zu pointern in compile time verwandelt
+- Beispiel: #method('a', 0, "asd") => #method({'a'}, {0}, "asd")
+
+| 0.0     | *AdvancedLoop* | `loop`*Iterator* `{`*Statements* `}           | V2          |
+
+// SCOPE EINIGUNG
+i++
+#funktion {
+    i++ // geteilte variable mit den "übergeordneten" scopes, bis die variable verwendet wird //function scope
+    a++ // eigene variable, kommt auf stack, hat jedes mal den wert 0 am anfang eines methoden aufrufes
+    #funktion1 {
+        i++ // verweist auf i ganz am anfang (in #main)
+        a++ // verweist auf a in #funktion
+    }
+}
+
+foreach a #funktion
+loop =>> a {
+#function(a)
+}
+loop <bedinung> {
+    i++ // geteilte variable mit den "übergeordneten" scopes, bis die variable verwendet wird
+    a++ // eigene variable, kommt auf stack, hat jedes mal den wert 0 am anfang des loop durchlaufes
+}
+
+-großgeschriebenen Variablen und Funktionen werden exportiert
+-der rest ist nur im file sichtbar (file scope)
+#0 //valid, zählt aber als kleingeschrieben
+
+#_ // valide, zählt aber als kleingeschrieben
+
+##_ invalide wegen hashtag im namen
+
+#_1 // valide aber zählt als kleingeschrieben
+
+#ABC //valide, wird exportiert
+a = ['p']
+
+(?![0-9])[a-zA-Z_0-9]+
+#[a-zA-Z_0-9]+
+
+_ = 0
+
+
+loopmax c #asdf
+
+if <bedingung> #asdf
+
+loop a =>> {
+<Statement>
+}
+
+if <bedingung> #<name> {...}
+else if <bedinung> {
+    if ...
+    else #<name>
+}
+
+
+-final scopes: function scope,
+
+
+#main // verboten
+
+#main() // erlaubt
+#test {
+    #test()
+    #a {
+        #test { // nicht erlaubt
+
+        }
+    }
+}
+
+- mehr mit os machen, z.B. system infos bekommen o.ä
+- eventuell mit mehreren os variablen
