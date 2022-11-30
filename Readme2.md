@@ -18,5 +18,11 @@
 
 ### FUNCTIONS
 
+### SHORT FORMS
+
+#### IF STATEMENTS
+
+#### LOOPS
+
 ## REFERENCE MANUAL
 
