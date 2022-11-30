@@ -114,6 +114,10 @@ TODO: sowas wie:
 ```kernel32 = os[WIN32API_OPTIONS] >>```
 -->
 
+## SCOPES
+
+
+
 ## REFERENCE MANUAL
 
 | nonterminal | syntax | description |
