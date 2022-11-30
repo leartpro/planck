@@ -1,0 +1,40 @@
+a                //ERROR: not a statement
+b = 7            //integer
+c = -3457        //integer
+d = 54.356       //double
+e = -23789.23589 //double
+f = b + c        //integer
+g = c + e        //double
+h = d - e        //double
+i = g *~ h       //double
+j = i + g /~ h   //double
+k = 'z'          //integer (ascii value of 'z')
+l = "bla"        //ERROR: can not set value to pointer
+
+m << "bla"      //append a pointer chain
+m <\            //unlink the pointer
+n = m ?>        //integer
+o << b          //append b on o
+p = o >>        //set p to 'o.next'
+stout <<= p     //print value of p
+
+[o == p]?{
+stdout <<= "value of o equals value of p"
+}:[o === p]{
+stdout <<= "o is the same as p"
+}:{
+stdout <<= "this is the else case :-((((("
+}
+
+q = 0
+[5]{            //runs the loop fife times
+q++
+stdout <<= q
+}
+[q <= 10]{
+[!(q % 2)]?{q+=2}:{q++} //if q is not divisible by two increase q by two, otherwise increase by one
+stdout <<= q
+}
+
+//TODO: functions
+
