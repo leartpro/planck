@@ -198,9 +198,14 @@ nach Beenden des procedure aufrufers, läuft die methode noch weiter
 
 #### DECLARATIONS
 
+- default value is optional
+- default for the default is zero
+
 ```
 struct <Name> {
-    ...
+    <attribute>: <default value>
+    <attribute>: 
+    <attribute>: <default value>
 }
 ```
 
@@ -221,10 +226,12 @@ params $<name> {
 
 ### SCOPES
 
-- file scope
+(- file scope)
 - exec scope
 - procedure scope
 - loop scope
+- gibt keine main oder sowas
+- code von oben nach unten
 
 #### EXEC-STATEMENTS
 
@@ -248,3 +255,4 @@ exec {
 ## IMPORT / EXPORT
 
 - syntax muss noch überlegt werden
+- oder gibt es einfach nicht idgaf
