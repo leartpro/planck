@@ -5,7 +5,7 @@
 Planck is designed
 to meet the requirements of algorithmic programming while remaining 
 as lightweight and low level as possible.
-Therefore, the name planck, because a Planck unit or length,
+Therefore, the name planck, because a planck unit or length,
 is the smallest theoretical length possible in physics.
 
 ## USAGE
@@ -16,6 +16,10 @@ planck <filename> [-option]
 ```
 planck "<code>" [-option]
 ```
+
+### FLAGS
+
+- hier mögliche flags für [-option]
 
 ## COMMENTS
 
@@ -42,6 +46,8 @@ Multiline comment:
 
 ## VALUE OPERATIONS
 
+- Zuweisungen nur für hexadezimale zahlen odr binäre zahlen bis zu einem byte
+- interpretation(positiv/negativ) ist dem entwickler überlassen (feature :D)
 ```
 a = 0x02
 b = 01001100
@@ -52,31 +58,42 @@ d = c ^ b //00000010
 ## LINKING OPERATIONS
 
 - container können beliebig verlinkt und end linkt werden
+- -hier noch paar beispiele
 
 ## OPERATORS
 
-| operator             | precedence | operator name                    | description                                         |
-|----------------------|------------|----------------------------------|-----------------------------------------------------|
-| `a * b`, `a / b`     | 10         | multiplication / division        | multiplication for only full numbers                |
-| `a % b`              | 10         | modulo                           |                                                     |
-| `a + b`, `a - b`     | 9          | addition, subtraction            | addition for numbers                                |
-| `a < b`, `a > b`     | 7          | is-less, is-greater              |                                                     |
-| `a <= b`, `a >= b`   | 7          | smaller/greater or equals        |                                                     |
-| `a == b`, `a != b`   | 6          | equals, not equals               |                                                     |
-| `a && b`             | 5          | and                              |                                                     |
-| `a &#124;&#124; b`   | 4          | or                               |                                                     |    
-| `a ^ b`              | 4          | xor                              |                                                     | 
-| `a ?>`               |            | is-next                          |                                                     |
-| `a === b`, `a !== b` |            | strict equals, strict not equals |                                                     |
-| `a << b`             | 8          | link                             | link A to B, return the last pointer of the B chain |
-| `-a*`                |            | negate                           |                                                     |
-| `!a*`                |            | not                              |                                                     |
-| `a >>`               |            | next                             |                                                     |
-| `a <\ `              |            | unlink                           |                                                     |
-| `a =>>`              |            | assigment to next                | a is now pointing to B                              |
+- hier noch allgemeine beschreibung der operatoren
+
+| operator             | precedence | operator name                    | description                                 |
+|----------------------|------------|----------------------------------|---------------------------------------------|
+| `a * b`, `a / b`     | 10         | multiplication / division        | multiplication / division operations        |
+| `a % b`              | 10         | modulo                           | modulo operations                           |
+| `a + b`, `a - b`     | 9          | addition, subtraction            | addition / subtraction operations           |
+| `a < b`, `a > b`     | 7          | is-less, is-greater              | greater / less comparisons                  |
+| `a <= b`, `a >= b`   | 7          | smaller/greater or equals        | greater-equals / less-equals comparisons    |
+| `a == b`, `a != b`   | 6          | equals, not equals               | equals / not-equals comparisons             |
+| `a && b`             | 5          | and                              | binary and operations                       |
+| `a &#124;&#124; b`   | 4          | or                               | binary or operations                        |    
+| `a ^ b`              | 4          | xor                              | binary xor operations                       | 
+| `a ?>`               |            | has-next                         | if current pointer from 'a' exist           |
+| `a === b`, `a !== b` |            | strict equals, strict not equals |                                             |
+| `a << b`             | 8          | link                             | links two variables, first points to second |
+| `-a`                 |            | negate                           | negates a value                             |
+| `!a`                 |            | not                              | conditional not                             |
+| `~a`                 |            | not                              | binary not operations                       |
+| `a >>`               |            | next                             | returns the next container a links to       |
+| `a <\ `              |            | unlink                           | unlinks the container a currently links to  |
+| `a =>>`              |            | assigment to next                | a is now strict equals to b                 |
+ | `a = b`              |            | assigment                        | a is now equals to b                        |
+| `-> a`               |            | submit                           | submits a value                             |
+| `<- a`               |            | return                           | returns a value                             |
+| `;`                  |            | break                            | breaks a loop                               |
+
 
 
 ## FLOW CONTROL
+
+- nur basic flow control
 
 ### CONDITIONS
 
@@ -103,6 +120,14 @@ d = c ^ b //00000010
     ...
 }
 ```
+
+#### BREAK
+
+ ```
+[<condition>] {
+    ; // breaks the loop
+}
+ ```
 
 ### PROCEDURES
 
@@ -146,6 +171,27 @@ With arguments
 <name> <arg1>, <arg2>
 ```
 
+#### SUBMIT
+
+- gibt auch return (performance gründe)
+- gibt nur submit und break
+- wenn submit, dann lasse gebe submit wert zurück und 
+nach Beenden des procedure aufrufers, läuft die methode noch weiter
+
+```
+<name> {
+    -> <value>
+}
+```
+
+#### RETURN
+
+```
+<name> {
+    <- <value>
+}
+```
+
 ### STRUCTS
 
 - Name wird immer großgeschrieben
@@ -160,8 +206,12 @@ struct <Name> {
 
 ### USAGES
 
+-wie in golang
+
 
 ### PARAMETERS
+
+-parameter loop
 
 ```
 params $<name> {
@@ -171,7 +221,14 @@ params $<name> {
 
 ### SCOPES
 
+- file scope
+- exec scope
+- procedure scope
+- loop scope
+
 #### EXEC-STATEMENTS
+
+- für scopes
 
 ```
 exec {
@@ -188,4 +245,6 @@ exec {
 | err     |       |             |
 | os      |       |             |
 
-todo: import/export
+## IMPORT / EXPORT
+
+- syntax muss noch überlegt werden
