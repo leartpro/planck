@@ -13,6 +13,14 @@ b = 00000000
 //decimal assigment
 c = 0
 
+c = 255
+d = 11111111
+[c == d] ? {
+    out: true
+} : {
+    out: false
+}
+
 //struct declaration
 struct Slice {
    length: 0x00
@@ -20,7 +28,7 @@ struct Slice {
    depth: 0x01
 }
 
-create_slices size {
+create_slices size {fgt
    [size == 0] ? {
        <- 0x00
    } : [size == 1] {

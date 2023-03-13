@@ -21,6 +21,10 @@ planck "<code>" [-option]
 
 - hier mögliche flags für [-option]
 
+### DEBUG
+
+-gibt keine Errors
+
 ## COMMENTS
 
 Singe line comment:
@@ -72,9 +76,11 @@ d = c ^ b //00000010
 | `a < b`, `a > b`     | 7          | is-less, is-greater              | greater / less comparisons                  |
 | `a <= b`, `a >= b`   | 7          | smaller/greater or equals        | greater-equals / less-equals comparisons    |
 | `a == b`, `a != b`   | 6          | equals, not equals               | equals / not-equals comparisons             |
-| `a && b`             | 5          | and                              | binary and operations                       |
-| `a &#124;&#124; b`   | 4          | or                               | binary or operations                        |    
-| `a ^ b`              | 4          | xor                              | binary xor operations                       | 
+| `a & b`              | 5          | and                              | binary 'and' operations                     |
+| `a &#124; b`         | 4          | or                               | binary 'or' operations                      |    
+| `a ^ b`              | 4          | xor                              | binary 'xor' operations                     | 
+| `a && b`             | 5          | and                              | logical 'and' comparisons                   |
+| `a &#124;&#124; b`   | 4          | or                               | logical 'or' comparisons                    |    
 | `a ?>`               |            | has-next                         | if current pointer from 'a' exist           |
 | `a === b`, `a !== b` |            | strict equals, strict not equals |                                             |
 | `a << b`             | 8          | link                             | links two variables, first points to second |
@@ -97,9 +103,10 @@ d = c ^ b //00000010
 
 ### CONDITIONS
 
-- ein byte kann als false gelesen werden, wenn dieser 0 ist
-- ein byte der nicht 0 ist, ist true
-- auf bedingungen mit operatoren sind zugelassen
+Innerhalb einer Condition kann ein einziges Byte stehen. 
+Dieser wird als falsch interpretiert, wenn er null ist, andernfalls als wahr.
+Sowohl Vergleichsoperatoren oder Operatoren, welcheWahrheitswerten als Rückgabe haben,
+sind ebenfalls in Conditions zugelassen.
 
 ### IF STATEMENTS
 
@@ -131,7 +138,7 @@ d = c ^ b //00000010
 
 ### PROCEDURES
 
-- name wird immer kleingeschrieben
+Der Name einer Procedure wird immer kleingeschrieben.
 
 #### DECLARATIONS
 
@@ -173,8 +180,6 @@ With arguments
 
 #### SUBMIT
 
-- gibt auch return (performance gründe)
-- gibt nur submit und break
 - wenn submit, dann lasse gebe submit wert zurück und 
 nach Beenden des procedure aufrufers, läuft die methode noch weiter
 
@@ -186,6 +191,8 @@ nach Beenden des procedure aufrufers, läuft die methode noch weiter
 
 #### RETURN
 
+Gibt mindestens eine value zurück und beendet die Procedure.
+
 ```
 <name> {
     <- <value>
@@ -194,12 +201,12 @@ nach Beenden des procedure aufrufers, läuft die methode noch weiter
 
 ### STRUCTS
 
-- Name wird immer großgeschrieben
+Ein Struct fasst beliebig viele Attribute.
+Der Name eines Structs muss immer großgeschrieben werden.
 
 #### DECLARATIONS
 
-- default value is optional
-- default for the default is zero
+Der Standartwert ist optional und standardmäßig null.
 
 ```
 struct <Name> {
@@ -211,12 +218,14 @@ struct <Name> {
 
 ### USAGES
 
--wie in golang
+````
+a = <Name> <attribute> <attribute>
+````
 
 
 ### PARAMETERS
 
--parameter loop
+Parameter können entweder über `$<index>` abgefragt werden, oder 
 
 ```
 params $<name> {
@@ -249,8 +258,6 @@ exec {
 |---------|-------|-------------|
 | in      |       |             |
 | out     |       |             |
-| err     |       |             |
-| os      |       |             |
 
 ## IMPORT / EXPORT
 
