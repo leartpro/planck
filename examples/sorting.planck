@@ -1,0 +1,57 @@
+//TODO: handle case: number larger than one byte
+unsorted
+init_unsorted
+count_of_elements = count unsorted
+sorted = sort unsorted
+output sorted
+
+init_unsorted $num {
+    unsorted << $num
+    unsorted =>>
+}
+
+count elements {
+    count = 0x00
+    temp = unsorted
+    [temp ?>] {
+        count++
+        temp >>
+    }
+    <- count
+}
+
+get_element index, elements {
+    //TODO: complete procedure
+}
+
+sort unsorted {
+    pos = count_of_elements
+    [pos > 0x00] ? {
+    has_swapped = 0x00 //false
+    index = 0x00
+        [index < pos] ? {
+            index++
+            left = get_element index, unsorted
+            right = get_element index + 1, unsorted
+            left = unsorted
+            unsorted >>
+            right = unsorted
+            [left > right] ? {
+            has_swapped = 0xFF //true
+            temp = left
+            left = right
+            right = temp
+            }
+        }
+        [!has_swapped] ? {
+            <- unsorted
+        } : {
+            pos--
+        }
+    }
+}
+
+output elements {
+    //TODO: complete procedure
+}
+
