@@ -5,11 +5,13 @@ count_of_elements = count unsorted
 sorted = sort unsorted
 output sorted
 
+//reads from programm args
 init_unsorted $num {
     unsorted << $num
     unsorted =>>
 }
 
+//get count of elements
 count elements {
     count = 0x00
     temp = unsorted
@@ -20,22 +22,29 @@ count elements {
     <- count
 }
 
+//get value by index
 get_element index, elements {
-    //TODO: complete procedure
+    pos = 0x00
+    [elements ?>] {
+        [pos == index] ? {
+            <- elements
+        }
+        pos++
+        elements >>
+    }
+    <- 0x00
 }
 
-sort unsorted {
+//sort elements
+sort elements {
     pos = count_of_elements
     [pos > 0x00] ? {
     has_swapped = 0x00 //false
     index = 0x00
         [index < pos] ? {
             index++
-            left = get_element index, unsorted
-            right = get_element index + 1, unsorted
-            left = unsorted
-            unsorted >>
-            right = unsorted
+            left = get_element index, elements
+            right = get_element index + 1, elements
             [left > right] ? {
             has_swapped = 0xFF //true
             temp = left
@@ -44,7 +53,7 @@ sort unsorted {
             }
         }
         [!has_swapped] ? {
-            <- unsorted
+            <- elements
         } : {
             pos--
         }
@@ -52,6 +61,25 @@ sort unsorted {
 }
 
 output elements {
-    //TODO: complete procedure
+    [elements ?>] { //for each element
+        current = printable_number elements
+        [current ?>] { //for each digit
+        out << current
+        current >>
+        }
+        elements >>
+    }
 }
 
+//transfers binary to list of decimal digits
+printable_number number {
+    digits
+    index = 0x00
+    [number > 0] {
+        digits << number % 10 + 48
+        digits =>>
+        number /= 10
+        index++
+    }
+    <- digits
+}
