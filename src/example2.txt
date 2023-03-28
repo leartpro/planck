@@ -1,0 +1,69 @@
+#import<List.planck> //Import der Datei List.planck
+&args //neuer Pointer mit dem Namen 'args'
+${ //parameter-loop
+&args <<= $ //anhängen an args und aktuell auf $ setzten
+}
+stout <<= "args: " //ausgabe
+stout <<= args //ausgabe von der Kette 'args'
+a = 1 //wert a ist gleich eins
+b = 'a' //b wird der char 'a' zugewiesen
+c = 78925.236572 //c ist eine fließkommazahl
+double = c ~* 3
+&a = "ajg" //pointerkette aus chars wird erstellt
+&b << &a //a an b anhängen (b zeigt auf a)
+&d = &b >> //b.next ist gleich d
+&b <\ //b hängt ab
+&a ?> //ob an a etwas hängt
+if(&a !== &d) &a <\ //if anweisung, von a wird abgehangen
+if b == 'b' { //if mit elif und else
+ a++
+} elif b == 'a' && &c >>* a || d == a {
+a +% b //rechenoperator mit zuweisung
+} elif d ^ b { //xor
+-a //negate
+} else {
+!a //not
+}
+a = 0
+d = 15
+loop a <= d { //loop <condition>
+a++
+stout <<= a //ausgabe
+}
+e = -4
+f = 16
+g = 'x'
+add(e,f,g, 365) //function call
+add: { //function definition
+${ //parameterloop
+result += $ //autocast von pointer $ zu wert, der mit result verrechnet wird
+}
+stout <<= "result of add: " //ausgabe
+stout <<= result //ausgabe
+}
+
+
+/*
+Für Version zwei:
+- return in function
+- submit in function
+- multipointer[]
+- gui
+-hexdezimal und binär
+-mehrere assigments in einer zeile z.b  a,b,c = 32
+-unsigned/signed für größeren zahlenbereich einführen
+(wird wie fließkommata erst bei der behandlung der zahlen unterschieden)
+-functionloop für submit
+-stdout für zahlen (stdnum)
+- iterator als loop condition (z.b. loop a <<= args) {...}
+- bibliothek für wurzel und exponetial rechnungen
+*/
+
+/*
+TODOs:
+- dynamische anpassung der wertegrößen im memory
+- pointer erst erstellen, wenn sie benötigt werden
+- {} condition loop
+- export, wenn namen großgeschrieben sind
+- mehr mit os machen (systeminformationen etc.)
+*/

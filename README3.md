@@ -1,5 +1,7 @@
 # PLANCK
 
+TODO: Pointer & Referenzen
+
 ## INTRODUCTION
 
 Planck is designed
@@ -23,7 +25,7 @@ planck "<code>" [-option]
 
 ### DEBUG
 
--gibt keine Errors
+in der Laufzeit können keine Fehler, sondern nur fehlerhaftes/ungewolltes Verhalten auftreten.
 
 ## COMMENTS
 
@@ -99,7 +101,7 @@ d = c ^ b //00000010
 
 ## FLOW CONTROL
 
-- nur basic flow control
+In planck gibt es die gängigen Flow-Controls.
 
 ### CONDITIONS
 
@@ -178,11 +180,6 @@ With arguments
 <name> <arg1>, <arg2>
 ```
 
-#### SUBMIT
-
-- wenn submit, dann lasse gebe submit wert zurück und 
-nach Beenden des procedure aufrufers, läuft die methode noch weiter
-
 ```
 <name> {
     -> <value>
@@ -216,7 +213,7 @@ struct <Name> {
 }
 ```
 
-### USAGES
+#### USAGES
 
 ````
 a = <Name> <attribute> <attribute>
@@ -225,7 +222,8 @@ a = <Name> <attribute> <attribute>
 
 ### PARAMETERS
 
-Parameter können entweder über `$<index>` abgefragt werden, oder 
+Parameter können entweder über `$<index>` abgefragt werden, 
+oder über eine Parameter-Loop, bez. Procedure.
 
 ```
 params $<name> {
@@ -233,21 +231,34 @@ params $<name> {
 }
 ```
 
-### SCOPES
+## ROUTINES
 
-(- file scope)
-- exec scope
-- procedure scope
-- loop scope
-- gibt keine main oder sowas
-- code von oben nach unten
+Routines sind wie Procedures, nur Nebenläufig.
+Diese können über Channels miteinander Kommunizieren.
+Dadurch wird nebenläufige Programmierung in planck ermöglicht.
 
-#### EXEC-STATEMENTS
+### SUBMIT
 
-- für scopes
+- wenn submit, dann lasse gebe submit wert zurück und
+  lasse routine aber weiter laufen
+- (ka ob das geht)
+
+### CHANNELS
+
+- wie in golang nur planck syntax halt
+
+
+## SCOPES
+
+Der Code wird von oben nach unten ausgeführt, da es keine main o.ä. gibt.
+Das oberste Scope ist das File-Scope, da es weder Import, noch Export von anderen Dateien gibt.
+Darunter kommen die Procedure und Routine Scopes.
+Die untersten Scopes stellen die Block Scopes dar.
+
+Ein Scope lässt sich grundsätzlich (abgesehen vom File-Scope) an den Block-Klammern erkennen.
 
 ```
-exec {
+{
     ...
 }
 ```
@@ -258,8 +269,3 @@ exec {
 |---------|-------|-------------|
 | in      |       |             |
 | out     |       |             |
-
-## IMPORT / EXPORT
-
-- syntax muss noch überlegt werden
-- oder gibt es einfach nicht idgaf
