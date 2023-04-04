@@ -10,13 +10,9 @@ is the smallest theoretical length possible in physics.
 
 ## USAGE
 
-`
-planck <filename> [-option]
-`
+`planck <filename> [-option]`
 
-`
-planck "<code>" [-option]
-`
+`planck "<code>" [-option]`
 
 ### FLAGS
 
@@ -135,11 +131,11 @@ das Ergebnis wird dementsprechend interpretiert.
 ### IF STATEMENTS
 
 ```
-[<condition>] ? {
+[<condition>] ? { //If
     ...
-} : [<condition>] {
+} : [<condition>] { //Else If
     ...
-} : {
+} : { //Else
     ...
 }
 ```
@@ -147,13 +143,19 @@ das Ergebnis wird dementsprechend interpretiert.
 ### LOOP STATEMENTS
 
 ```
-[<condition>] {
+[<condition>] { //while
     ...
 }
 ```
 
+```
+{ //do
+    ...
+} [<condition>] //while
+```
+
  ```
-[<condition>] {
+[<condition>] { //while
     ; // breaks the loop
 }
  ```
@@ -201,26 +203,27 @@ With arguments:
 ### ROUTINES
 
 Routines sind wie Procedures, nur Nebenläufig.
-Diese können über Channels miteinander Kommunizieren.
+Es handelt sich dabei um leichte und performante Threads, 
+welche über Channels miteinander Kommunizieren können.
 Dadurch wird nebenläufige Programmierung in planck ermöglicht.
 
 #### SUBMIT
 
-- wenn submit, dann lasse gebe submit wert zurück und
-  lasse routine aber weiter laufen
-- (ka ob das geht)
+Über submit `<value> -> _<channel>` kann an einen channel gesendet werden.
+This allows routines to synchronize without explicit locks or condition variables.
 
-#### CHANNELS
+#### CHANNEL
 
+Der Code innerhalb eines Channels wird ausgeführt, sobald ihm ein Wert gesendet wurde.
 ```
-<name> {
-    -> <value>
+_<name> {
+    ...
 }
 ```
 
 ### RETURN
 
-Gibt mindestens eine value zurück und beendet die Procedure oder die Routine.
+Gibt mindestens eine value zurück und beendet die Procedure, Schleife oder die Routine.
 
 ```
   ...
