@@ -200,11 +200,17 @@ With arguments:
 ```
 ### ROUTINES
 
+Routines sind wie Procedures, nur Nebenläufig.
+Diese können über Channels miteinander Kommunizieren.
+Dadurch wird nebenläufige Programmierung in planck ermöglicht.
 
 #### SUBMIT
 
 - wenn submit, dann lasse gebe submit wert zurück und
-  nach Beenden des procedure aufrufers, läuft die methode noch weiter
+  lasse routine aber weiter laufen
+- (ka ob das geht)
+
+#### CHANNELS
 
 ```
 <name> {
