@@ -4,7 +4,6 @@
 
 class Interpreter {
 public:
-    Interpreter() = default;
     double interpret(AstNode* root) {
         if (root == nullptr) {
             return 0;

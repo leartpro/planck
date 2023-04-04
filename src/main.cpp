@@ -3,6 +3,7 @@
 #include "Lexer.h"
 #include "AST.h"
 #include "Parser.h"
+#include "Interpreter.h"
 
 using namespace std;
 
