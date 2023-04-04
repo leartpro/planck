@@ -1,0 +1,4 @@
+#ifndef PLANCK_LEXER_H
+#define PLANCK_LEXER_H
+
+#endif //PLANCK_LEXER_H

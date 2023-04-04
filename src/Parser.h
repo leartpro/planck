@@ -1,0 +1,4 @@
+#ifndef PLANCK_PARSER_H
+#define PLANCK_PARSER_H
+
+#endif //PLANCK_PARSER_H

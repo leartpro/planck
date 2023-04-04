@@ -10,4 +10,4 @@ add_executable(
         src/AST.cpp
         src/Parser.cpp
         src/Interpreter.cpp
-        src/Token.cpp)
+        src/Token.cpp src/AST.h src/Interpreter.h src/Lexer.h src/Parser.h src/Token.h)
