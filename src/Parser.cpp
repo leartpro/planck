@@ -1,6 +1,8 @@
+#include "AST.h"
+#include "Lexer.h"
+
 class Parser {
 public:
-    Parser(Lexer& lexer) : lexer_(lexer), currentToken_(Token::Invalid) {}
     AstNode* parse() {
         getNextToken();
         return expr();

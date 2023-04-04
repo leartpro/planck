@@ -1,10 +1,9 @@
 #include <string>
+#include <utility>
 #include "Token.h"
 
 class Lexer {
 public:
-    Lexer(std::string input) : input_(input), position_(0) {}
-
     Token getNextToken() {
         while (position_ < input_.size()) {
             switch (input_[position_]) {

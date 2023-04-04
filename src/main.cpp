@@ -1,5 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include "Lexer.h"
+#include "AST.h"
+#include "Parser.h"
 
 using namespace std;
 
@@ -21,6 +24,7 @@ int main(int argc, char *argv[]) {
 
     try {
         // Lexer initialisieren
+        const auto code = "x = 3 + 4 * 2\ny = x / 2 - 1";
         Lexer lexer(code);
 
         // Parser initialisieren

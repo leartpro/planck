@@ -1,9 +1,10 @@
 #include <string>
 #include <unordered_map>
+#include "AST.h"
 
 class Interpreter {
 public:
-    Interpreter() {}
+    Interpreter() = default;
     double interpret(AstNode* root) {
         if (root == nullptr) {
             return 0;
