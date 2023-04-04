@@ -99,6 +99,8 @@ In Planck gibt es keine Schlüsselwörter, dafür aber einen großen Umfang an O
 | `a & b`              | 5          | and                              | binary 'and' operations                     |
 | `a &#124; b`         | 4          | or                               | binary 'or' operations                      |    
 | `a ^ b`              | 4          | xor                              | binary 'xor' operations                     | 
+| `a <<: b`            | 4          | left shift                       | binary right shift operations               | 
+| `a :>> b`            | 4          | right shift                      | binary left shift operations                | 
 | `a && b`             | 5          | and                              | logical 'and' comparisons                   |
 | `a &#124;&#124; b`   | 4          | or                               | logical 'or' comparisons                    |    
 | `a ?>`               |            | has-next                         | if current pointer from 'a' exist           |
