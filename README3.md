@@ -3,36 +3,50 @@
 ## INTRODUCTION
 
 Planck is designed
-to meet the requirements of algorithmic programming while remaining 
+to meet the requirements of algorithmic programming while remaining
 as lightweight and low level as possible.
 Therefore, the name planck, because a planck unit or length,
 is the smallest theoretical length possible in physics.
 
 ## USAGE
 
-```
+`
 planck <filename> [-option]
-```
-```
+`
+
+`
 planck "<code>" [-option]
-```
+`
 
 ### FLAGS
 
-- hier mögliche flags für [-option]
+Mögliche flags für `[-option]` sind:
+
+| flag | name   | description                      | usage                |
+  |------|--------|----------------------------------|----------------------|
+| -d   | debug  | schaltet den debug output an     | `-d`                 |
+| -b   | break  | bricht an der gegebenen Zeile ab | `-b <line number>`   |
+| -i   | input  | legt den Input fest              | `-i <input source>`  |
+| -o   | output | left den Output fest             | `-o <output source>` |
+
+Standardmäßig sind Input und Output die Konsole.
 
 ### DEBUG
 
--gibt keine Errors
+In Planck kann es unter keinen Umständen zu Laufzeitfehlern kommen.
+Da es keine Fehlermeldung gibt,
+muss nach ungewünschtem Verhalten geprüft und getestet werden.
 
 ## COMMENTS
 
 Singe line comment:
-```
+
+`
 // Comment goes here
-```
+`
 
 Multiline comment:
+
 ```
 /* 
  * Comment
@@ -40,33 +54,43 @@ Multiline comment:
  */ 
 ```
 
-## VARIABLES
+## CONTAINER
 
-- gibt nur Container
-- alle Container sind ein Byte groß
-- Container können beliebig miteinander verknüpft werden
-- gibt keine Datentypen
-- keine leeren Zuweisungen
+In Planck gibt es nur Container.
+Jeder Container kann einen Wert, bis zu einem Byte groß, speichern.
+des Weiteren kann jeder Container beliebig mit anderen Containern verbunden werden.
 
-## VALUE OPERATIONS
+```
+a = 1
+b = 2
+a << b
+c = a >> //2
+a />
+c= a >> //0x00
+```
 
-- Zuweisungen nur für hexadezimale zahlen odr binäre zahlen bis zu einem byte
-- interpretation(positiv/negativ) ist dem entwickler überlassen (feature :D)
+Da es nur Container gibt,
+existieren in Planck keine Datentypen und müssen daher auch nicht angegeben werden.
+Leere Zuweisungen von Containern sind nicht möglich.
+Zuweisungen können in Binär, Hexadezimal oder dezimal erfolgen.
+
 ```
 a = 0x02
 b = 01001100
 c = a + b //01001110
 d = c ^ b //00000010
+e = 230
+f = -230
+d = e - f //00000000
 ```
 
-## LINKING OPERATIONS
-
-- container können beliebig verlinkt und end linkt werden
-- -hier noch paar beispiele
+Jeder Container speichert seinen Wert unsigned,
+allerdings ist eine Eingabe von negativen Dezimalzahlen dennoch erlaubt.
+Die Interpretation und Verwendung ist daher vom Entwickler abhängig.
 
 ## OPERATORS
 
-- hier noch allgemeine beschreibung der operatoren
+In Planck gibt es keine Schlüsselwörter, dafür aber einen großen Umfang an Operatoren.
 
 | operator             | precedence | operator name                    | description                                 |
 |----------------------|------------|----------------------------------|---------------------------------------------|
@@ -90,12 +114,10 @@ d = c ^ b //00000010
 | `a >>`               |            | next                             | returns the next container a links to       |
 | `a <\ `              |            | unlink                           | unlinks the container a currently links to  |
 | `a =>>`              |            | assigment to next                | a is now strict equals to b                 |
- | `a = b`              |            | assigment                        | a is now equals to b                        |
+| `a = b`              |            | assigment                        | a is now equals to b                        |
 | `-> a`               |            | submit                           | submits a value                             |
 | `<- a`               |            | return                           | returns a value                             |
 | `;`                  |            | break                            | breaks a loop                               |
-
-
 
 ## FLOW CONTROL
 
@@ -103,10 +125,12 @@ d = c ^ b //00000010
 
 ### CONDITIONS
 
-Innerhalb einer Condition kann ein einziges Byte stehen. 
+Innerhalb einer Condition kann ein einziges Byte stehen.
 Dieser wird als falsch interpretiert, wenn er null ist, andernfalls als wahr.
-Sowohl Vergleichsoperatoren oder Operatoren, welcheWahrheitswerten als Rückgabe haben,
+Sowohl Vergleichsoperatoren oder Operatoren, welche Wahrheitswerten als Rückgabe haben,
 sind ebenfalls in Conditions zugelassen.
+Ebenfalls zugelassen sind Rechnungen,
+das Ergebnis wird dementsprechend interpretiert.
 
 ### IF STATEMENTS
 
@@ -128,8 +152,6 @@ sind ebenfalls in Conditions zugelassen.
 }
 ```
 
-#### BREAK
-
  ```
 [<condition>] {
     ; // breaks the loop
@@ -139,9 +161,8 @@ sind ebenfalls in Conditions zugelassen.
 ### PROCEDURES
 
 Der Name einer Procedure wird immer kleingeschrieben.
-
-#### DECLARATIONS
-
+Eine Procedure kann beliebig viele Argumente erhalten, 
+diese müssen aber vorher definiert werden.
 ```
 <name> {
     ...
@@ -166,22 +187,24 @@ Der Name einer Procedure wird immer kleingeschrieben.
 }
 ```
 
-#### CALLS
+Procedures können mit oder ohne Argumenten aufgerufen werden.
 
-Without arguments
+Without arguments:
 ```
 <name>
 ```
 
-With arguments
+With arguments:
 ```
 <name> <arg1>, <arg2>
 ```
+### ROUTINES
+
 
 #### SUBMIT
 
-- wenn submit, dann lasse gebe submit wert zurück und 
-nach Beenden des procedure aufrufers, läuft die methode noch weiter
+- wenn submit, dann lasse gebe submit wert zurück und
+  nach Beenden des procedure aufrufers, läuft die methode noch weiter
 
 ```
 <name> {
@@ -189,77 +212,81 @@ nach Beenden des procedure aufrufers, läuft die methode noch weiter
 }
 ```
 
-#### RETURN
+### RETURN
 
-Gibt mindestens eine value zurück und beendet die Procedure.
+Gibt mindestens eine value zurück und beendet die Procedure oder die Routine.
 
 ```
-<name> {
+  ...
     <- <value>
-}
+  ...
+```
+
+```
+  ...
+    <- <value> <value>
+  ...
 ```
 
 ### STRUCTS
 
 Ein Struct fasst beliebig viele Attribute.
 Der Name eines Structs muss immer großgeschrieben werden.
-
-#### DECLARATIONS
-
 Der Standartwert ist optional und standardmäßig null.
+Ein Struct kann wie folgt definiert werden:
 
 ```
-struct <Name> {
+<Name> {
     <attribute>: <default value>
     <attribute>: 
     <attribute>: <default value>
 }
 ```
 
-### USAGES
+Ein Struct kann wie folgt verwendet werden:
 
 ````
 a = <Name> <attribute> <attribute>
 ````
 
-
 ### PARAMETERS
 
-Parameter können entweder über `$<index>` abgefragt werden, oder 
+Parameter können entweder über `$<index>` abgefragt werden,
+oder über eine parameter loop.
 
 ```
 params $<name> {
-    ...
+    <statements>
 }
 ```
 
 ### SCOPES
 
-(- file scope)
-- exec scope
-- procedure scope
-- loop scope
-- gibt keine main oder sowas
-- code von oben nach unten
-
-#### EXEC-STATEMENTS
-
-- für scopes
+Das oberste Scope in planck ist das file scope.
+Darunter kommen die procedure scopes und die routine scopes.
+Loops und Bedingungen fallen unter das block scope.
+Alle Scopes, unter dem file scope, lassen sich an den Blockklammern erkennen.
 
 ```
-exec {
-    ...
+{
+    <statements>
 }
 ```
 
+Da es keine `main` oder vergleichbares gibt,
+wird der Code von oben nach unten abgearbeitet.
+Procedures und Routines müssen definiert sein,
+bevor diese verwendet werden können.
+
 ## SYSTEM
 
-| keyword | usage | description |
-|---------|-------|-------------|
-| in      |       |             |
-| out     |       |             |
+| operator | name   | description                       | usage           | 
+|----------|--------|-----------------------------------|-----------------|
+| `<:`     | input  | reads the given input byte wise   | `<variable> <:` |
+| `:>`     | output | writes the given output byte wise | `<variable> :>` |
 
 ## IMPORT / EXPORT
 
-- syntax muss noch überlegt werden
-- oder gibt es einfach nicht idgaf
+Es ist nicht möglich Inhalte aus anderen Dateien zu importieren
+oder zu anderen Dateien Inhalte zu exportieren.
+Daher ist es nicht möglich mehrere `.planck` Dateien miteinander zu verknüpfen.

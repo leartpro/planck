@@ -41,7 +41,7 @@ sort elements {
     [pos > 0x00] ? {
     has_swapped = 0x00 //false
     index = 0x00
-        [index < pos] ? {
+        [index < pos] {
             index++
             left = get_element index, elements
             right = get_element index + 1, elements
