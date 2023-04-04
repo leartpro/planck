@@ -32,14 +32,13 @@ int main(int argc, char *argv[]) {
         Parser parser(lexer);
 
         // AST aufbauen
-        AstNode* rootNode = parser.parse();
+        AstNode *rootNode = parser.parse();
 
         // Interpreter initialisieren und Auswertung starten
         Interpreter interpreter;
-        interpreter.visit(rootNode);
 
         // Ergebnis ausgeben
-        std::cout << "Result: " << interpreter.getResult() << std::endl;
+        std::cout << "Result: " << interpreter.interpret(rootNode) << std::endl;
 
         // AST freigeben
         delete rootNode;

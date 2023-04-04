@@ -15,7 +15,7 @@ private:
             getNextToken();
 
             AstNode* right = term();
-            AstNode* newNode = new AstNode();
+            auto* newNode = new AstNode();
             newNode->type = AstNodeType::BinaryOperation;
             newNode->left = left;
             newNode->right = right;

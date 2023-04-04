@@ -10,6 +10,7 @@ class Parser
 {
 public:
     explicit Parser(Lexer& lexer) : lexer_(lexer), currentToken_(Token::Invalid) {}
+    AstNode* parse();
 private:
 
     Lexer &lexer_;
