@@ -121,7 +121,7 @@ In Planck gibt es keine Schlüsselwörter, dafür aber einen großen Umfang an O
 
 ## FLOW CONTROL
 
-- nur basic flow control
+In planck gibt es die gängigen Flow-Controls.
 
 ### CONDITIONS
 
@@ -251,12 +251,12 @@ a = <Name> <attribute> <attribute>
 
 ### PARAMETERS
 
-Parameter können entweder über `$<index>` abgefragt werden,
-oder über eine parameter loop.
+Parameter können entweder über `$<index>` abgefragt werden, 
+oder über eine Parameter-Loop, bez. Procedure.
 
 ```
 params $<name> {
-    <statements>
+    ...
 }
 ```
 
@@ -269,7 +269,7 @@ Alle Scopes, unter dem file scope, lassen sich an den Blockklammern erkennen.
 
 ```
 {
-    <statements>
+    ...
 }
 ```
 

@@ -12,7 +12,8 @@ ist in der Physik die kleinste theoretische Länge, die möglich ist.
 
 ```
 // Zeilenkommentar
-
+```
+```
 /*
  * Reihenkommentar
  *
@@ -24,14 +25,14 @@ ist in der Physik die kleinste theoretische Länge, die möglich ist.
 ### Werte
 
 ```
-a* // Wert von a
+a // Wert von a
 ```
 
 Einem Wert können entweder Zahlen oder Zeichen übergeben werden.
 
 ```
-a* = 7
-b* = 'p'
+a = 7
+b = 'p'
 ```
 
 Dabei darf ein Wert nie größer als ein 64Bit sein.
@@ -43,15 +44,14 @@ wird ein Laufzeitfehler geworfen.
 Die Größe eines Wertes passt sich dabei dynamisch im Memory bis maximal 64Bit an.
 
 ```
-a* = 2^65 //Fehler
-a* = "Hallo" //Fehler
+a = "Hallo" //Fehler
 ```
 
 ```
-a* = 2 //Wert von 2
-b* = 'b' // Wert von 98
-c* = a* + b* // Wert von 100 
-d* = c* + 200 // Wert von 300
+a = 2       //Wert von 2
+b = 'b'     // Wert von 98
+c = a + b   // Wert von 100 
+d = c + 200 // Wert von 300
 ```
 
 Wie dem Beispiel zu entnehmen ist, können Zeichen mit Zahlen verrechnet werden.
@@ -61,7 +61,7 @@ Der Wertebereich von Fließkommazahlen liegt zwischen -2^53Bit und +2^53Bit.
 Die maximale Anzahl an Nachkommastellen beträgt dabei 17.
 
 ```
-a* = 304.2389457
+a = 304.2389457
 ```
 
 ### Pointer
@@ -71,20 +71,20 @@ die einen Wert (hier den von a*) enthält.
 Dabei kann die Variable b hier ebenfalls auf eine Variable verweisen.
 
 ```
-a* // Wert von a
-a // Pointer von a
-a << b // a zeigt auf b, beziehungsweise wird b an a angehängt
+a        // Wert von a
+&a       // Pointer von a
+&a << &b // &a zeigt auf &b, beziehungsweise wird &b an &a angehängt
 ```
 
-Wenn a auf eine Variable zeigt und b auf a gesetzt wird,
-zeigt b ebenfalls auf diese Variable.
-Wenn der Wert dieser Variable anhand der Referenz in b (mit b*) geändert wird,
-enthält a* den gleichen Wert (hier 'a').
+Wenn &a auf eine Variable zeigt und &b auf &a gesetzt wird,
+zeigt &b ebenfalls auf diese Variable.
+Wenn der Wert dieser Variable anhand der Referenz in &b (mit b) geändert wird,
+enthält a den gleichen Wert (hier 'a').
 
 ```
-a
-b = a
-b* = 'a' // a* == b* 
+&a
+&b = &a
+b = 'a' // a == b
 ```
 
 Da diese Variablen Ketten bilden können (z.B. A -> B -> C -> D).
@@ -93,17 +93,17 @@ können Zeichenketten gebildet werden.
 Im folgenden Beispiel wird die Zeichenkette "abc" von a aus gebildet.
 
 ```
-a* = 'a' // der Pointer a von a* zeigt auf eine Variable A
-b* = 'b' // der Pointer b von b* zeigt auf eine Variable B
-c* = 'c' // ...
-a << b // B wird an A angehängt
-b << c // C wird an B angehängt
+a = 'a'  // der Pointer &a von a zeigt auf eine Variable A
+b = 'b'  // der Pointer &b von b zeigt auf eine Variable B
+c = 'c'  // ...
+&a << &b // B wird an A angehängt
+&b << &c // C wird an B angehängt
 ```
 
 Die Kurzschreibweise lautet aber:
 
 ```
-a = "abc"
+&a = "abc"
 ```
 
 Der Pointer den a dabei vorher besaß,
@@ -119,39 +119,37 @@ getrennt behandelt werden.
 <!-- TO-DO: vielleicht bis auf manche Operatoren -->
 
 ```
-a* = a + b // Geht nicht, da das Ergebnis von zwei Pointern,
-           // ein Pointer ist.
-a * a* // Geht nicht, da es nur Operatoren zwischen zwei Pointern
-       // und zwischen zwei nicht Pointern gibt.
-a = 'a' // Geht nicht, da 'a' ein Wert ist
-        // und keinen Pointer zurückgibt, richtig wäre "a"
-a* = "a" // Geht nicht, da "a" einen Pointer zurückgibt
-         // und man aber a* einen Wert zuweise muss
+a = &a + &b // Geht nicht, da das Rechnen mit Pointern nicht möglich nicht
+&a = 'a'    // Geht nicht, da 'a' ein Wert ist
+            // und keinen Pointer zurückgibt. Richtig wäre hier "a".
+a = "a"     // Geht nicht, da "a" einen Pointer zurückgibt
+            // und a einen Wert benötigt
 ```
 
 Um dem zu entgehen, kann mit {```WERT```} ein Wert in eine neue Variable eingesetzt werden,
 der Pointer dieser Variablen kann dann zurückgegeben werden.
 
 ```
-// a -> A, b -> B
-a = {b*} // a wird einem Pointer zugewiesen,
+&a = {b} // a wird einem Pointer zugewiesen,
          // der auf eine neue Variable zeigt,
          // die den gegebenen Wert enthält
          // (in diesem Fall, der Wert von B)
-a = {b* + 12 + 'b'} // erweitertes Beispiel
+```
+```
+&a = {b + 12 + 'b'} // erweitertes Beispiel
 ```
 
 Verändernde Operatoren/Operationen für Pointer am Beispiel a -> A, b -> B, c -> C:
 
 ```
-a << b // An A wird B angehängt,
-       // die letzte Variable in der Kette von B wird zurückgegeben,
-       // so dass Ketten wie a << "asdf" << 34 << b erzeugt werden können
-a >> // Der Pointer von B wird zurückgegeben,
-     // wenn A auf nichts zeigen würde,
-     // ergäbe das einen Fehler
-a << c // an A wird C gehängt, b wird abgehangen
-a <\ // von A wird C abgehangen an A hängt nichts mehr
+&a << &b // An A wird B angehängt,
+         // die letzte Variable in der Kette von B wird zurückgegeben,
+         // so dass Ketten wie &a << "asdf" << 34 << &b erzeugt werden können
+&a >>    // Der Pointer von B wird zurückgegeben,
+         // wenn A auf nichts zeigen würde,
+         // ergäbe das einen Fehler
+&a << &c // an A wird C gehängt, &b wird abgehangen
+&a <\    // von A wird C abgehangen an A hängt nichts mehr
 ```
 
 ### Vergleichsoperatoren
@@ -160,18 +158,16 @@ Konditionale Operatoren bei Pointern
 geben immer den Wert zero oder eins zurück.
 
 ```
-a -> A, b -> B
-a ?> // ob A auf eine andere Variable zeigt
-a === b // ob a und b den gleichen Pointer enthalten
+&a ?> // ob A auf eine andere Variable zeigt
+&a === &b // ob a und b den gleichen Pointer enthalten
 ```
 
 Konditionale Operatoren bei den Werten von Pointern
 geben lediglich die Werte eins für true und zero für false.
 
 ```
-// a -> A, b -> B
-a* == b* // ob der Wert von A gleich dem Wert von B entspricht
-a* < b* // ob der Wert von A kleiner ist als der von B
+a == b // ob der Wert von A gleich dem Wert von B entspricht
+a < b // ob der Wert von A kleiner ist als der von B
 ```
 
 ### Logische Operatoren
@@ -182,18 +178,19 @@ Es gibt die standard logischen Operatoren
 Diese können auf Werte angewendet werden und geben einen anderen Wert zurück.
 
 ```
-a* = 1 + 4 + 16 + 64 // 01010101
-a* = !a* // 10101010
+a = 1 + 4 + 16 + 64 // 01010101
+a = !a // 10101010
 ```
 
 ### Zuweisungsoperatoren
 
-Alle Rechenoperatoren, Vergleichsoperatoren und logische Operatoren
-mit zwei Operanten, dürfen immer auch als Zuweisungsoperatoren
-verwendet werden, mit einem zusätzlichen '=' am Ende des Operators.
+Alle Rechenoperatoren mit zwei Operanten dürfen,
+mit einem zusätzlichen '=' am Ende des Operators,
+auch als Zuweisungsoperatoren
+verwendet werden.
 
 ```
-a* &&= 234 // a* = a* && 234
+a += 234 // a = a + 234
 ```
 
 Da der verändernde Operator '<<'
@@ -201,17 +198,15 @@ den Pointer der hintersten Variable in der Kette des zweiten Operanden zurückgi
 kann dieser auch als Zuweisungsoperator verwendet werden.
 
 ```
-// a -> A
-a <<= "abc" // hängt {'a'} -> {'b'} -> {'c'} hinten an A,
-            // nun hat a den Pointer der neu
-            // erzeugten Variable mit dem Wert 'c'
+&a <<= "abc" // hängt {'a'} -> {'b'} -> {'c'} hinten an &a an
+            // nun hat &a den Pointer der neu erzeugten Variable mit dem Wert 'c'
 ```
 
-Es gibt außerdem den Operator '=>>'. Ein Beispiel:
+Es gibt außerdem den Operator '=>>'. 
+Ein Beispiel:
 
 ```
-a -> A: {} -> B ->
-a =>> // a zeigt nun auf die nächste Variable, also hier B
+&a =>> // &a zeigt nun auf die nächste Variable
 ```
 
 Eine volle Liste an Operatoren befindet sich am Ende. <!-- TODO: Am Ende-->
@@ -248,9 +243,9 @@ Eine nicht erfüllende Bedingung: 00000000
 Ein Beispiel:
 
 ```
-if a* == 'a' {
+if a == 'a' {
      ...
-} elif a === b && a* == 511 {
+} elif &a === &b && a == 511 {
      ...
 } else {
      ...
@@ -260,7 +255,7 @@ if a* == 'a' {
 Ohne Klammern, darf auch ein if alleine stehen:
 
 ```
-if (a << b)* == 'a': a << c
+if (&a << &b)* == 'a': &a << &c
 ```
 
 ### Schleifen
@@ -271,7 +266,7 @@ loop <Bedingung> {
 }
 
 
-loop a* > 0 {
+loop a > 0 {
 ...
 } 
 
@@ -281,7 +276,7 @@ loop a* > 0 {
 
 ```
 add: {
-$0* + $1*
+$0 += $1
 }
 ```
 
@@ -293,32 +288,25 @@ $0* + $1*
     -
 
 ```
+sum: {
+$params {
+  result += $
+ }
+}
+```
 
-add: {
-$0* + $1*
-}
-
-<name>: {
-
-parameterloop {
-parameterloop {
-}
-}
-$
-...
-submit
-...
-return
-}
-}
+```
+a = 5
+c = -8
+result = 0
+sum(a, c, 'x', 23)
 ```
 
 ## Import
 
+Hier wird die .planck Datei List importiert
 ```
 #import<List>
-
-imports <<= "import.planck" :-(
 ```
 
 ## Reference Manual
