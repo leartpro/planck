@@ -12,7 +12,6 @@ is the smallest theoretical length possible in physics.
 
 `planck <filename> [-option]`
 
-`planck "<code>" [-option]`
 
 ### FLAGS
 
