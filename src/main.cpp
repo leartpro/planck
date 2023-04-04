@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 
-#include "lexer/lexer.h"
-
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -21,11 +19,25 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-
-    lexer::Lexer lexer(programText);
-
     try {
-        // Try to parse as program
+        // Lexer initialisieren
+        Lexer lexer(code);
+
+        // Parser initialisieren
+        Parser parser(lexer);
+
+        // AST aufbauen
+        AstNode* rootNode = parser.parse();
+
+        // Interpreter initialisieren und Auswertung starten
+        Interpreter interpreter;
+        interpreter.visit(rootNode);
+
+        // Ergebnis ausgeben
+        std::cout << "Result: " << interpreter.getResult() << std::endl;
+
+        // AST freigeben
+        delete rootNode;
     }
     catch (exception &e) {
         cerr << e.what() << endl;

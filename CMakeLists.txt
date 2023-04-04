@@ -3,8 +3,11 @@ project(planck)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(planck
+add_executable(
+        planck
         src/main.cpp
-        src/lexer/lexer.cpp src/lexer/lexer.h
-        src/lexer/token.cpp src/lexer/token.h
-        )
+        src/Lexer.cpp
+        src/AST.cpp
+        src/Parser.cpp
+        src/Interpreter.cpp
+        src/Token.cpp)
