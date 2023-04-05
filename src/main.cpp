@@ -9,38 +9,32 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-    string programText;
-
     ifstream is(argv[2]);
-    if (is) {
-        while (!is.eof()) {
-            char c;
-            is.get(c);
-            programText += c;
-        }
-    } else {
+    if (!is) {
         cerr << "Could not open file " << argv[2] << endl;
         return 1;
     }
 
+    is.seekg(0, ifstream::end);
+    size_t fileSize = is.tellg();
+    is.seekg(0, ifstream::beg);
+    char programText[fileSize + 1];
+    size_t i = 0;
+    char c;
+    while (is.get(c)) {
+        programText[i++] = c;
+    }
+    programText[i] = '\0';
+
+    //TODO: remove debug prints
+    cout << programText << endl << static_cast <const void *> (programText) << endl;
+
     try {
-        // Lexer initialisieren
-        const auto code = "x = 3 + 4 * 2 \n y = x / 2 - 1";
-        Lexer lexer(code);
-
-        // Parser initialisieren
+        Lexer lexer(programText);
         Parser parser(lexer);
-
-        // AST aufbauen
         AstNode *rootNode = parser.parse();
-
-        // Interpreter initialisieren und Auswertung starten
         Interpreter interpreter;
-
-        // Ergebnis ausgeben
-        std::cout << "Result: " << interpreter.interpret(rootNode) << std::endl;
-
-        // AST freigeben
+        cout << "Result: " << interpreter.interpret(rootNode) << endl;
         delete rootNode;
     }
     catch (exception &e) {
