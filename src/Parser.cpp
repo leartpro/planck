@@ -1,57 +1,46 @@
-#include "AST.h"
-#include "Lexer.h"
+#include "Parser.h"
 
-class Parser {
-public:
-    explicit Parser(Lexer &lexer) : lexer_(lexer) {
-        currentToken_ = Token::Invalid;
-    }
+AstNode *Parser::parse() {
+    getNextToken();
+    return expr();
+}
 
-    AstNode* parse() {
+AstNode *Parser::expr() {
+    AstNode *left = term();
+    while (currentToken_ == Token::Plus || currentToken_ == Token::Minus) {
+        Token op = currentToken_;
         getNextToken();
-        return expr();
-    }
-private:
-    AstNode* expr() {
-        AstNode* left = term();
-        while (currentToken_ == Token::Plus || currentToken_ == Token::Minus) {
-            Token op = currentToken_;
-            getNextToken();
 
-            AstNode* right = term();
-            auto* newNode = new AstNode();
-            newNode->type = AstNodeType::BinaryOperation;
-            newNode->left = left;
-            newNode->right = right;
-            newNode->op = op;
-            left = newNode;
-        }
-
-        return left;
+        AstNode *right = term();
+        auto *newNode = new AstNode();
+        newNode->type = AstNodeType::BinaryOperation;
+        newNode->left = left;
+        newNode->right = right;
+        newNode->op = op;
+        left = newNode;
     }
 
-    AstNode* term() {
-        if (currentToken_ == Token::Number) {
-            auto* node = new AstNode();
-            node->type = AstNodeType::NumberLiteral;
-            node->value = std::stod(lexer_.getTokenValue());
-            getNextToken();
-            return node;
-        } else if (currentToken_ == Token::Identifier) { // check for identifier
-            auto* node = new AstNode();
-            node->type = AstNodeType::Identifier;
-            node->identifier = lexer_.getTokenValue();
-            getNextToken();
-            return node;
-        }
-        return nullptr; // invalid term
-    }
+    return left;
+}
 
-    void getNextToken() {
-        currentToken_ = lexer_.getNextToken();
+AstNode *Parser::term() {
+    if (currentToken_ == Token::Number) {
+        auto *node = new AstNode();
+        node->type = AstNodeType::NumberLiteral;
+        node->value = std::stod(lexer_.getTokenValue());
+        getNextToken();
+        return node;
+    } else if (currentToken_ == Token::Identifier) { // check for identifier
+        auto *node = new AstNode();
+        node->type = AstNodeType::Identifier;
+        node->identifier = lexer_.getTokenValue();
+        getNextToken();
+        return node;
     }
+    return nullptr; // invalid term
+}
 
-    Lexer& lexer_;
-    Token currentToken_;
-};
+void Parser::getNextToken() {
+    currentToken_ = lexer_.getNextToken();
+}
 

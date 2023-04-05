@@ -14,6 +14,7 @@ public:
 private:
     int position_;
     std::string input_;
+    std::string tokenValue_;
     Token getNumber();
     Token getIdentifier();
     void advance();
