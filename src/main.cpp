@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
     try {
         // Lexer initialisieren
-        const auto code = "x = 3 + 4 * 2\ny = x / 2 - 1";
+        const auto code = "x = 3 + 4 * 2 \n y = x / 2 - 1";
         Lexer lexer(code);
 
         // Parser initialisieren

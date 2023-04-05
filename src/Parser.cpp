@@ -3,6 +3,10 @@
 
 class Parser {
 public:
+    explicit Parser(Lexer &lexer) : lexer_(lexer) {
+        currentToken_ = Token::Invalid;
+    }
+
     AstNode* parse() {
         getNextToken();
         return expr();
@@ -28,13 +32,13 @@ private:
 
     AstNode* term() {
         if (currentToken_ == Token::Number) {
-            AstNode* node = new AstNode();
+            auto* node = new AstNode();
             node->type = AstNodeType::NumberLiteral;
             node->value = std::stod(lexer_.getTokenValue());
             getNextToken();
             return node;
         } else if (currentToken_ == Token::Identifier) { // check for identifier
-            AstNode* node = new AstNode();
+            auto* node = new AstNode();
             node->type = AstNodeType::Identifier;
             node->identifier = lexer_.getTokenValue();
             getNextToken();

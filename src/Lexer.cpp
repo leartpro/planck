@@ -25,7 +25,7 @@ public:
                 default:
                     if (isdigit(input_[position_])) {
                         return getNumber();
-                    } else if (isalpha(input_[position_])) { // check for identifier
+                    } else if (isalpha(input_[position_])) {
                         return getIdentifier();
                     }
                     return Token::Invalid;
@@ -34,7 +34,9 @@ public:
         return Token::Eof;
     }
 
-    std::string getTokenValue() const { return tokenValue_; }
+    std::string getTokenValue() {
+        return tokenValue_;
+    }
 
 private:
     Token getNumber() {
@@ -47,7 +49,7 @@ private:
         return Token::Number;
     }
 
-    Token getIdentifier() { // get identifier
+    Token getIdentifier() {
         std::string identifier;
         while (position_ < input_.size() && isalnum(input_[position_])) {
             identifier.push_back(input_[position_]);
@@ -63,4 +65,3 @@ private:
     std::string tokenValue_;
     size_t position_;
 };
-

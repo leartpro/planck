@@ -8,7 +8,7 @@
 class Lexer
 {
 public:
-    explicit Lexer(std::string input) : input_(std::move(input)), position_(0) {}
+    explicit Lexer(const char *const input) : input_(input), position_(0) {}
     Token getNextToken();
     std::string getTokenValue();
 private:

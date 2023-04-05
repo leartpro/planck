@@ -5,9 +5,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(
         planck
-        src/main.cpp
+        src/AST.h
+        src/Token.h
         src/Lexer.cpp src/Lexer.h
         src/Parser.cpp src/Parser.h
         src/Interpreter.cpp src/Interpreter.h
-        src/AST.h
-        src/Token.h)
+        src/main.cpp
+)
