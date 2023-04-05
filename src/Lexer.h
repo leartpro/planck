@@ -17,6 +17,5 @@ private:
     std::string tokenValue_;
     Token getNumber();
     Token getIdentifier();
-    void advance();
 };
 #endif //PLANCK_LEXER_H

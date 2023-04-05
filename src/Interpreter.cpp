@@ -28,6 +28,6 @@ double Interpreter::interpret(AstNode *root) {
     }
 }
 
-void Interpreter::setVariable(const std::string &name, double value) {
+void Interpreter::setVariable(const string &name, double value) {
     variables_[name] = value;
 }

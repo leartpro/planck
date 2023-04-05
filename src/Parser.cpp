@@ -27,7 +27,7 @@ AstNode *Parser::term() {
     if (currentToken_ == Token::Number) {
         auto *node = new AstNode();
         node->type = AstNodeType::NumberLiteral;
-        node->value = std::stod(lexer_.getTokenValue());
+        node->value = stod(lexer_.getTokenValue());
         getNextToken();
         return node;
     } else if (currentToken_ == Token::Identifier) { // check for identifier

@@ -8,6 +8,6 @@ enum class Token {
     Multiply,
     Divide,
     Number,
-    Identifier // new token for identifiers
+    Identifier
 };
 #endif //PLANCK_TOKEN_H

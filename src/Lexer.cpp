@@ -1,22 +1,24 @@
 #include "Lexer.h"
 
+using namespace std;
+
 Token Lexer::getNextToken() {
     while (position_ < input_.size()) {
         switch (input_[position_]) {
             case '+':
-                advance();
+                ++position_;
                 return Token::Plus;
             case '-':
-                advance();
+                ++position_;
                 return Token::Minus;
             case '*':
-                advance();
+                ++position_;
                 return Token::Multiply;
             case '/':
-                advance();
+                ++position_;
                 return Token::Divide;
             case ' ':
-                advance();
+                ++position_;
                 continue;
             default:
                 if (isdigit(input_[position_])) {
@@ -30,28 +32,26 @@ Token Lexer::getNextToken() {
     return Token::Eof;
 }
 
-std::string Lexer::getTokenValue() {
+string Lexer::getTokenValue() {
     return tokenValue_;
 }
 
 Token Lexer::getNumber() {
-    std::string number;
+    string number;
     while (position_ < input_.size() && isdigit(input_[position_])) {
         number.push_back(input_[position_]);
-        advance();
+        ++position_;
     }
     tokenValue_ = number;
     return Token::Number;
 }
 
 Token Lexer::getIdentifier() {
-    std::string identifier;
+    string identifier;
     while (position_ < input_.size() && isalnum(input_[position_])) {
         identifier.push_back(input_[position_]);
-        advance();
+        ++position_;
     }
     tokenValue_ = identifier;
     return Token::Identifier;
 }
-
-void Lexer::advance() { ++position_; }

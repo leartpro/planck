@@ -4,6 +4,8 @@
 #include <string>
 #include "Token.h"
 
+using namespace std;
+
 enum class AstNodeType {
     Invalid,
     NumberLiteral,
@@ -23,7 +25,7 @@ struct AstNode {
     Token op;
 
     // Identifier node
-    std::string identifier; // new field for identifier nodes
+    string identifier; // new field for identifier nodes
 
     AstNode() : type(AstNodeType::Invalid), value(0), left(nullptr), right(nullptr), op(Token::Invalid) {}
 };
