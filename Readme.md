@@ -15,22 +15,21 @@ is the smallest theoretical length possible in physics.
 
 ### FLAGS
 
-Mögliche flags für `[-option]` sind:
+Possible flags for `[-option]` are:
 
-| flag | name   | description                      | usage                |
-  |------|--------|----------------------------------|----------------------|
-| -d   | debug  | schaltet den debug output an     | `-d`                 |
-| -b   | break  | bricht an der gegebenen Zeile ab | `-b <line number>`   |
-| -i   | input  | legt den Input fest              | `-i <input source>`  |
-| -o   | output | left den Output fest             | `-o <output source>` |
+| flag | name   | description                  | usage                |
+  |------|--------|------------------------------|----------------------|
+| -d   | debug  | switches the debug output on | `-d`                 |
+| -b   | break  | breaks at the given line     | `-b <line number>`   |
+| -i   | input  | sets the input               | `-i <input source>`  |
+| -o   | output | sets the output              | `-o <output source>` |
 
-Standardmäßig sind Input und Output die Konsole.
+By default, Input and Output are the console.
 
 ### DEBUG
 
-In Planck kann es unter keinen Umständen zu Laufzeitfehlern kommen.
-Da es keine Fehlermeldung gibt,
-muss nach ungewünschtem Verhalten geprüft und getestet werden.
+In Planck, runtime errors cannot occur under any circumstances.
+Since there is no error message must be checked and tested for undesired behavior.
 
 ## COMMENTS
 
@@ -51,9 +50,9 @@ Multiline comment:
 
 ## CONTAINER
 
-In Planck gibt es nur Container.
-Jeder Container kann einen Wert, bis zu einem Byte groß, speichern.
-des Weiteren kann jeder Container beliebig mit anderen Containern verbunden werden.
+In Planck there are only containers.
+Each container can store a value up to one byte in size.
+Furthermore, each container can be arbitrarily connected to other containers.
 
 ```
 a = 1
@@ -64,10 +63,10 @@ a />
 c= a >> //0x00
 ```
 
-Da es nur Container gibt,
-existieren in Planck keine Datentypen und müssen daher auch nicht angegeben werden.
-Leere Zuweisungen von Containern sind nicht möglich.
-Zuweisungen können in Binär, Hexadezimal oder dezimal erfolgen.
+Since there are only containers,
+there are no data types in Planck, and therefore they do not have to be specified.
+Empty assignments of containers are not possible.
+Assignments can be made in binary, hexadecimal or decimal.
 
 ```
 a = 0x02
@@ -79,13 +78,13 @@ f = -230
 d = e - f //00000000
 ```
 
-Jeder Container speichert seinen Wert unsigned,
-allerdings ist eine Eingabe von negativen Dezimalzahlen dennoch erlaubt.
-Die Interpretation und Verwendung ist daher vom Entwickler abhängig.
+Each container stores its value unsigned,
+however an input of negative decimal numbers is nevertheless permitted.
+The interpretation and usage is therefore dependent on the developer.
 
 ## OPERATORS
 
-In Planck gibt es keine Schlüsselwörter, dafür aber einen großen Umfang an Operatoren.
+There are no keywords in Planck, but there is a large set of operators.
 
 | operator             | precedence | operator name                    | description                                 |
 |----------------------|------------|----------------------------------|---------------------------------------------|
@@ -118,16 +117,15 @@ In Planck gibt es keine Schlüsselwörter, dafür aber einen großen Umfang an O
 
 ## FLOW CONTROL
 
-In planck gibt es die gängigen Flow-Controls.
-
+In planck there are the common flow controls.
 ### CONDITIONS
 
-Innerhalb einer Condition kann ein einziges Byte stehen.
-Dieser wird als falsch interpretiert, wenn er null ist, andernfalls als wahr.
-Sowohl Vergleichsoperatoren oder Operatoren, welche Wahrheitswerten als Rückgabe haben,
-sind ebenfalls in Conditions zugelassen.
-Ebenfalls zugelassen sind Rechnungen,
-das Ergebnis wird dementsprechend interpretiert.
+Within a condition there can be a single byte.
+This is interpreted as false if it is zero, otherwise as true.
+Both comparison operators or operators which have truth values as return,
+are also allowed in conditions.
+Calculations are also allowed,
+the result is interpreted accordingly.
 
 ### IF STATEMENTS
 
@@ -163,9 +161,9 @@ das Ergebnis wird dementsprechend interpretiert.
 
 ### PROCEDURES
 
-Der Name einer Procedure wird immer kleingeschrieben.
-Eine Procedure kann beliebig viele Argumente erhalten, 
-diese müssen aber vorher definiert werden.
+The name of a procedure is always lowercase.
+A procedure can have any number of arguments,
+but they must be defined beforehand.
 ```
 <name> {
     ...
@@ -190,7 +188,7 @@ diese müssen aber vorher definiert werden.
 }
 ```
 
-Procedures können mit oder ohne Argumenten aufgerufen werden.
+Procedures can be called with or without arguments.
 
 Without arguments:
 ```
@@ -203,19 +201,19 @@ With arguments:
 ```
 ### ROUTINES
 
-Routines sind wie Procedures, nur Nebenläufig.
-Es handelt sich dabei um leichte und performante Threads, 
-welche über Channels miteinander Kommunizieren können.
-Dadurch wird nebenläufige Programmierung in planck ermöglicht.
+Routines are like procedures, only concurrent.
+They are light and performant threads,
+which can communicate with each other via channels.
+This enables concurrent programming in planck.
 
 #### SUBMIT
 
-Über submit `<value> -> _<channel>` kann an einen channel gesendet werden.
-This allows routines to synchronize without explicit locks or condition variables.
+Via submit `<value> -> _<channel>` can be sent to a channel.
+This allows the synchronization of routines without explicit locks or condition variables.
 
 #### CHANNEL
 
-Der Code innerhalb eines Channels wird ausgeführt, sobald ihm ein Wert gesendet wurde.
+The code within a channel is executed as soon as a value is sent to it.
 ```
 _<name> {
     ...
@@ -224,8 +222,7 @@ _<name> {
 
 ### RETURN
 
-Gibt mindestens eine value zurück und beendet die Procedure, Schleife oder die Routine.
-
+Returns at least one value and terminates the procedure, loop or routine.
 ```
   ...
     <- <value>
@@ -240,10 +237,10 @@ Gibt mindestens eine value zurück und beendet die Procedure, Schleife oder die 
 
 ### STRUCTS
 
-Ein Struct fasst beliebig viele Attribute.
-Der Name eines Structs muss immer großgeschrieben werden.
-Der Standartwert ist optional und standardmäßig null.
-Ein Struct kann wie folgt definiert werden:
+A struct can contain any number of attributes.
+The name of a struct must always be capitalized.
+The default value is optional and null by default.
+A struct can be defined as follows:
 
 ```
 <Name> {
@@ -253,7 +250,7 @@ Ein Struct kann wie folgt definiert werden:
 }
 ```
 
-Ein Struct kann wie folgt verwendet werden:
+A Struct can be used as follows:
 
 ````
 a = <Name> <attribute> <attribute>
@@ -261,8 +258,8 @@ a = <Name> <attribute> <attribute>
 
 ### PARAMETERS
 
-Parameter können entweder über `$<index>` abgefragt werden, 
-oder über eine Parameter-Loop, bez. Procedure.
+Parameters can be queried either via `$<index>`,
+or via a parameter loop, i.e. procedure.
 
 ```
 params $<name> {
@@ -272,10 +269,10 @@ params $<name> {
 
 ### SCOPES
 
-Das oberste Scope in planck ist das file scope.
-Darunter kommen die procedure scopes und die routine scopes.
-Loops und Bedingungen fallen unter das block scope.
-Alle Scopes, unter dem file scope, lassen sich an den Blockklammern erkennen.
+The top scope in planck is the file scope.
+Below that are the procedure scopes and the routine scopes.
+Loops and conditions fall under the block scope.
+All scopes below the file scope can be recognized by the block brackets.
 
 ```
 {
@@ -283,10 +280,10 @@ Alle Scopes, unter dem file scope, lassen sich an den Blockklammern erkennen.
 }
 ```
 
-Da es keine `main` oder vergleichbares gibt,
-wird der Code von oben nach unten abgearbeitet.
-Procedures und Routines müssen definiert sein,
-bevor diese verwendet werden können.
+Since there is no `main` or comparable,
+the code is processed from top to bottom.
+Procedures and routines must be defined
+before they can be used.
 
 ## SYSTEM
 
@@ -297,6 +294,6 @@ bevor diese verwendet werden können.
 
 ## IMPORT / EXPORT
 
-Es ist nicht möglich Inhalte aus anderen Dateien zu importieren
-oder zu anderen Dateien Inhalte zu exportieren.
-Daher ist es nicht möglich mehrere `.planck` Dateien miteinander zu verknüpfen.
+It is not possible to import content from other files
+or to export content to other files.
+Therefore, it is not possible to link several `.planck` files together.
