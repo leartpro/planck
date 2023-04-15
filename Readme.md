@@ -8,10 +8,13 @@ as lightweight and low level as possible.
 Therefore, the name planck, because a planck unit or length,
 is the smallest theoretical length possible in physics.
 
+## FLANCK
+
+TODO ...
+
 ## USAGE
 
 `planck <filename> [-option]`
-
 
 ### FLAGS
 
@@ -44,6 +47,13 @@ Multiline comment:
  * Comment
  * goes here 
  */ 
+```
+
+## IMPORT / EXPORT
+
+```
+# <filename>.planck
+# <filename>.flanck
 ```
 
 ## CONTAINER

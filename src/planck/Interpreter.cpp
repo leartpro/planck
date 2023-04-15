@@ -1,13 +1,13 @@
 #include "Interpreter.h"
 
-double Interpreter::interpret(AstNode *root) {
+double Interpreter::interpret(Node *root) {
     if (root == nullptr) {
         return 0;
     }
 
-    if (root->type == AstNodeType::NumberLiteral) {
+    if (root->type == Statement::NumberLiteral) {
         return root->value;
-    } else if (root->type == AstNodeType::Identifier) {
+    } else if (root->type == Statement::Identifier) {
         return variables_[root->identifier];
     }
 

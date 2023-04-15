@@ -11,7 +11,7 @@ class Interpreter
 {
 public:
     Interpreter() = default;
-    double interpret(AstNode* root);
+    double interpret(Node* root);
     void setVariable(const string& name, double value);
 private:
     unordered_map<std::string, double> variables_;

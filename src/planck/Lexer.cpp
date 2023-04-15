@@ -22,7 +22,7 @@ Token Lexer::getNextToken() {
                 continue;
             default:
                 if (isdigit(input_[position_])) {
-                    return getNumber();
+                    return getValue();
                 } else if (isalpha(input_[position_])) {
                     return getIdentifier();
                 }
@@ -36,7 +36,7 @@ string Lexer::getTokenValue() {
     return tokenValue_;
 }
 
-Token Lexer::getNumber() {
+Token Lexer::getValue() {
     string number;
     while (position_ < input_.size() && isdigit(input_[position_])) {
         number.push_back(input_[position_]);

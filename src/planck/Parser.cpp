@@ -1,19 +1,19 @@
 #include "Parser.h"
 
-AstNode *Parser::parse() {
+Node *Parser::parse() {
     getNextToken();
     return expr();
 }
 
-AstNode *Parser::expr() {
-    AstNode *left = term();
+Node *Parser::expr() {
+    Node *left = term();
     while (currentToken_ == Token::Plus || currentToken_ == Token::Minus) {
         Token op = currentToken_;
         getNextToken();
 
-        AstNode *right = term();
-        auto *newNode = new AstNode();
-        newNode->type = AstNodeType::BinaryOperation;
+        Node *right = term();
+        auto *newNode = new Node();
+        newNode->type = Statement::BinaryOperation;
         newNode->left = left;
         newNode->right = right;
         newNode->op = op;
@@ -23,16 +23,16 @@ AstNode *Parser::expr() {
     return left;
 }
 
-AstNode *Parser::term() {
+Node *Parser::term() {
     if (currentToken_ == Token::Number) {
-        auto *node = new AstNode();
-        node->type = AstNodeType::NumberLiteral;
+        auto *node = new Node();
+        node->type = Statement::NumberLiteral;
         node->value = stod(lexer_.getTokenValue());
         getNextToken();
         return node;
     } else if (currentToken_ == Token::Identifier) { // check for identifier
-        auto *node = new AstNode();
-        node->type = AstNodeType::Identifier;
+        auto *node = new Node();
+        node->type = Statement::Identifier;
         node->identifier = lexer_.getTokenValue();
         getNextToken();
         return node;

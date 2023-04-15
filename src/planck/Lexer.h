@@ -15,7 +15,7 @@ private:
     int position_;
     std::string input_;
     std::string tokenValue_;
-    Token getNumber();
+    Token getValue();
     Token getIdentifier();
 };
 #endif //PLANCK_LEXER_H

@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     try {
         Lexer lexer(programText);
         Parser parser(lexer);
-        AstNode *rootNode = parser.parse();
+        Node *rootNode = parser.parse();
         Interpreter interpreter;
         cout << "Result: " << interpreter.interpret(rootNode) << endl;
         delete rootNode;

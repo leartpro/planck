@@ -13,10 +13,10 @@ public:
     explicit Parser(Lexer& lexer) : lexer_(lexer), currentToken_(Token::Invalid) {
         currentToken_ = Token::Invalid;
     }
-    AstNode* parse();
+    Node* parse();
 private:
-    AstNode* expr();
-    AstNode* term();
+    Node* expr();
+    Node* term();
     void getNextToken();
     Lexer &lexer_;
     Token currentToken_;
