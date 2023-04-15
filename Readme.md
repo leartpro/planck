@@ -21,8 +21,6 @@ Possible flags for `[-option]` are:
   |------|--------|------------------------------|----------------------|
 | -d   | debug  | switches the debug output on | `-d`                 |
 | -b   | break  | breaks at the given line     | `-b <line number>`   |
-| -i   | input  | sets the input               | `-i <input source>`  |
-| -o   | output | sets the output              | `-o <output source>` |
 
 By default, Input and Output are the console.
 
@@ -95,12 +93,12 @@ There are no keywords in Planck, but there is a large set of operators.
 | `a <= b`, `a >= b`   | 7          | smaller/greater or equals        | greater-equals / less-equals comparisons    |
 | `a == b`, `a != b`   | 6          | equals, not equals               | equals / not-equals comparisons             |
 | `a & b`              | 5          | and                              | binary 'and' operations                     |
-| `a &#124; b`         | 4          | or                               | binary 'or' operations                      |    
+| `a \| ; b`           | 4          | or                               | binary 'or' operations                      |    
 | `a ^ b`              | 4          | xor                              | binary 'xor' operations                     | 
 | `a <<: b`            | 4          | left shift                       | binary right shift operations               | 
 | `a :>> b`            | 4          | right shift                      | binary left shift operations                | 
 | `a && b`             | 5          | and                              | logical 'and' comparisons                   |
-| `a &#124;&#124; b`   | 4          | or                               | logical 'or' comparisons                    |    
+| `a \|\| b`           | 4          | or                               | logical 'or' comparisons                    |    
 | `a ?>`               |            | has-next                         | if current pointer from 'a' exist           |
 | `a === b`, `a !== b` |            | strict equals, strict not equals |                                             |
 | `a << b`             | 8          | link                             | links two variables, first points to second |
@@ -284,13 +282,6 @@ Since there is no `main` or comparable,
 the code is processed from top to bottom.
 Procedures and routines must be defined
 before they can be used.
-
-## SYSTEM
-
-| operator | name   | description                       | usage           | 
-|----------|--------|-----------------------------------|-----------------|
-| `<:`     | input  | reads the given input byte wise   | `<variable> <:` |
-| `:>`     | output | writes the given output byte wise | `<variable> :>` |
 
 ## IMPORT / EXPORT
 

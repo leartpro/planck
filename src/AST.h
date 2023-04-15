@@ -10,7 +10,7 @@ enum class AstNodeType {
     Invalid,
     NumberLiteral,
     BinaryOperation,
-    Identifier // new node type for identifiers
+    Identifier
 };
 
 struct AstNode {
@@ -25,7 +25,7 @@ struct AstNode {
     Token op;
 
     // Identifier node
-    string identifier; // new field for identifier nodes
+    string identifier;
 
     AstNode() : type(AstNodeType::Invalid), value(0), left(nullptr), right(nullptr), op(Token::Invalid) {}
 };
