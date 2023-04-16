@@ -20,15 +20,15 @@ struct Statement {
 
 /**
  * Führt das Statement aus, indem die Conditions geprüft werden und bei Richtigkeit die Instructions ausgeführt werden
- * @param statement
- * @param stacks
+ * @param statement eine referenz auf das aktuelle statement
+ * @param stacks eine referenz aller stacks
  * @return true wenn sich etwas auf den stacks verändert hat
  */
 bool executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
     for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
         if (stacks.size() < stack_index + 1) stacks.emplace_back();
         if (stacks[stack_index].empty() && !statement.condition.empty()) return false;
-        for (int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
+        for (int stack_position = int(statement.condition[stack_index].size()); stack_position > 0; stack_position--) {
             if (statement.condition[stack_index][stack_position] !=
                 stacks[stack_index][stacks[stack_index].size() - stack_position - 1]) {
                 return false;
@@ -36,13 +36,13 @@ bool executeStatement(const Statement &statement, vector<vector<bool>> &stacks) 
         }
     }
     bool hasChanged = false;
+    //TODO: legt nicht die gesamte introduction auf den keller
     for (int stack_index = 0; stack_index < statement.instructions.size(); stack_index++) {
         if (stacks.size() < stack_index + 1) stacks.emplace_back();
-        stacks[stack_index].insert(stacks[stack_index].end(),
-                                   statement.instructions[stack_index].begin(),
-                                   statement.instructions[stack_index].end()
-        );
-        hasChanged = true;
+        for (int stack_position = int(statement.instructions[stack_index].size()); stack_position > 0; stack_position--) {
+            stacks[stack_index].push_back(statement.instructions[stack_index][stack_position]);
+            hasChanged = true;
+        }
     }
     return hasChanged;
 }
@@ -99,25 +99,37 @@ int main(int argc, char *argv[]) {
         while (programText[position] != '\n' && position < ::strlen(programText)) {
             switch (programText[position]) {
                 case '[':
-                    if(valueAllowed) { cerr << "Syntax error " << endl; return 1; }
+                    if (valueAllowed) {
+                        cerr << "Syntax error " << endl;
+                        return 1;
+                    }
                     valueAllowed = true;
                     break;
                 case ']':
-                    if(!valueAllowed) { cerr << "Syntax error " << endl; return 1; }
+                    if (!valueAllowed) {
+                        cerr << "Syntax error " << endl;
+                        return 1;
+                    }
                     valueAllowed = false;
                     break;
                 case ':':
-                    if(valueAllowed) { cerr << "Syntax error " << endl; return 1; }
+                    if (valueAllowed) {
+                        cerr << "Syntax error " << endl;
+                        return 1;
+                    }
                     valueAllowed = false;
                     hasDivider = true;
                     break;
                 case '0':
                 case '1':
-                    if(!valueAllowed) { cerr << "Syntax error " << endl; return 1; }
+                    if (!valueAllowed) {
+                        cerr << "Syntax error " << endl;
+                        return 1;
+                    }
                     vector<bool> stack;
                     while (position < ::strlen(programText)) {
                         stack.push_back(programText[position] == '0');
-                        if(programText[position + 1] == '0' || programText[position + 1] == '1') {
+                        if (programText[position + 1] == '0' || programText[position + 1] == '1') {
                             ++position;
                         } else {
                             break;
