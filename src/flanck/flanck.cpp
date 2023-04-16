@@ -1,59 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <utility>
-#include <sstream>
 
 using namespace std;
-
-/**
- * Jedes Statement setzt sich aus seinen Conditions und seinem Instructions zusammen
- */
-struct Statement {
-    Statement(vector<vector<bool>> condition, vector<vector<bool>> instructions) {
-        this->condition = std::move(condition);
-        this->instructions = std::move(instructions);
-    }
-
-    vector<vector<bool> > condition;
-    vector<vector<bool> > instructions;
-};
-
-/**
- * Führt das Statement aus, indem die Conditions geprüft werden und bei Richtigkeit die Instructions ausgeführt werden
- * @param statement eine referenz auf das aktuelle statement
- * @param stacks eine referenz aller stacks
- * @return true wenn sich etwas auf den stacks verändert hat
- */
-bool executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
-    //dynamically add stacks
-    int count_of_stacks = int(max(statement.condition.size(), statement.instructions.size()));
-    while (stacks.size() < count_of_stacks) stacks.push_back(*new vector<bool>());
-    //validate conditions
-    for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
-        if(statement.condition[stack_index].size() > stacks[stack_index].size()) return false;
-        for(int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
-            if(statement.condition[stack_index][stack_position] != stacks[stack_index][stacks[stack_index].size() -1 - stack_position]) {
-                return false;
-            }
-        }
-    }
-    //remove conditions from stacks
-    for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
-        if (stacks[stack_index].size() > statement.condition[stack_index].size())
-            stacks[stack_index].erase(stacks[stack_index].begin() + int(stacks[stack_index].size() - statement.condition[stack_index].size()),
-                                      stacks[stack_index].end());
-        else stacks[stack_index].erase(stacks[stack_index].begin(), stacks[stack_index].end());
-    }
-    //execute instructions
-    bool changes = false;
-    for (int stack_index = 0; stack_index < statement.instructions.size(); stack_index++) {
-        for (int stack_position = int(statement.instructions[stack_index].size()); stack_position > 0; stack_position--) {
-            stacks[stack_index].push_back(statement.instructions[stack_index][stack_position - 1]);
-            changes = true;
-        }
-    }
-    return changes;
-}
 
 /**
  *
@@ -97,7 +46,7 @@ int main(int argc, char *argv[]) {
         }
     }
     //initialize program stack / lexing+parsing
-    vector<Statement> programStack;
+    vector<pair<vector<vector<bool> >, vector<vector<bool> > > > programStack; //first=conditions, second=instructions
     int position = 0;
     while (position < ::strlen(programText)) {
         vector<vector<bool> > read;
@@ -157,26 +106,42 @@ int main(int argc, char *argv[]) {
     bool stackChanged = true;
     while (stackChanged) {
         stackChanged = false;
-        for (const Statement &statement: programStack) {
-            if (executeStatement(statement, stacks)) {
-                stackChanged = true;
+        for (const auto &statement: programStack) {
+            //dynamically add stacks
+            int count_of_stacks = int(max(statement.first.size(), statement.second.size()));
+            while (stacks.size() < count_of_stacks) stacks.push_back(*new vector<bool>());
+            //validate conditions
+            for (int stack_index = 0; stack_index < statement.first.size(); stack_index++) {
+                if(statement.first[stack_index].size() > stacks[stack_index].size()) goto next_statement;
+                for(int stack_position = 0; stack_position < statement.first[stack_index].size(); stack_position++) {
+                    if(statement.first[stack_index][stack_position] != stacks[stack_index][stacks[stack_index].size() -1 - stack_position]) {
+                        goto next_statement;
+                    }
+                }
             }
+            //remove conditions from stacks
+            for (int stack_index = 0; stack_index < statement.first.size(); stack_index++) {
+                if (stacks[stack_index].size() > statement.first[stack_index].size())
+                    stacks[stack_index].erase(stacks[stack_index].begin() + int(stacks[stack_index].size() - statement.first[stack_index].size()),
+                                              stacks[stack_index].end());
+                else stacks[stack_index].erase(stacks[stack_index].begin(), stacks[stack_index].end());
+            }
+            //execute instructions
+            for (int stack_index = 0; stack_index < statement.second.size(); stack_index++) {
+                for (int stack_position = int(statement.second[stack_index].size()); stack_position > 0; stack_position--) {
+                    stacks[stack_index].push_back(statement.second[stack_index][stack_position - 1]);
+                    stackChanged = true;
+                }
+            }
+            next_statement:;
         }
     }
     //print program output
     if (stacks.size() < 2) return 0;
-    string binaryOutput;
-    for (bool &&e: stacks[1]) {
-        binaryOutput.push_back(e ? '0' : '1');
+    for (int i = 0; i < stacks[1].size(); i += 8) {
+        std::bitset<8> byte;
+        for (int j = 0; j < 8; j++) byte[7-j] = (!stacks[1][i + j]);
+        cout << char(byte.to_ulong());
     }
-    stringstream sstream(binaryOutput);
-    string asciiOutput;
-    while (sstream.good()) {
-        bitset<8> bits;
-        sstream >> bits;
-        char ch = char(bits.to_ulong());
-        asciiOutput += ch;
-    }
-    cout << asciiOutput << endl;
     return 0;
 }
