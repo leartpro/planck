@@ -27,7 +27,7 @@ struct Statement {
 bool executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
     for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
         if (stacks.size() < stack_index + 1) stacks.emplace_back();
-        if(stacks[stack_index].empty() && !statement.condition.empty()) return false;
+        if (stacks[stack_index].empty() && !statement.condition.empty()) return false;
         for (int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
             if (statement.condition[stack_index][stack_position] !=
                 stacks[stack_index][stacks[stack_index].size() - stack_position - 1]) {
@@ -35,7 +35,7 @@ bool executeStatement(const Statement &statement, vector<vector<bool>> &stacks) 
             }
         }
     }
-    bool  hasChanged = false;
+    bool hasChanged = false;
     for (int stack_index = 0; stack_index < statement.instructions.size(); stack_index++) {
         if (stacks.size() < stack_index + 1) stacks.emplace_back();
         stacks[stack_index].insert(stacks[stack_index].end(),
@@ -91,73 +91,53 @@ int main(int argc, char *argv[]) {
     //initialize program stack / lexing+parsing
     vector<Statement> programStack;
     int position = 0;
-    //TODO: The two inner while loops can be combined
     while (position < ::strlen(programText)) {
         vector<vector<bool> > read;
-        bool valueAllowed = false;
-        while (programText[position] != ':' && position < ::strlen(programText)) {
-            switch (programText[position]) {
-                case '[':
-                    valueAllowed = true;
-                    break;
-                case ']':
-                    valueAllowed = false;
-                    break;
-                case '0':
-                case '1':
-                    if (!valueAllowed) {
-                        cerr << "Syntax error " << endl;
-                        return -1;
-                    }
-                    vector<bool> stack;
-                    while (position < ::strlen(programText) &&
-                           (programText[position] == '0' || programText[position] == '1')) {
-                        stack.push_back(programText[position] == '0');
-                        ++position;
-                    }
-                    read.push_back(stack);
-                    valueAllowed = false;
-                    break;
-            }
-            position++;
-        }
-        position++;
         vector<vector<bool> > write;
+        bool valueAllowed = false;
+        bool hasDivider = false;
         while (programText[position] != '\n' && position < ::strlen(programText)) {
             switch (programText[position]) {
                 case '[':
+                    if(valueAllowed) { cerr << "Syntax error " << endl; return 1; }
                     valueAllowed = true;
                     break;
                 case ']':
+                    if(!valueAllowed) { cerr << "Syntax error " << endl; return 1; }
                     valueAllowed = false;
+                    break;
+                case ':':
+                    if(valueAllowed) { cerr << "Syntax error " << endl; return 1; }
+                    valueAllowed = false;
+                    hasDivider = true;
                     break;
                 case '0':
                 case '1':
-                    if (!valueAllowed) {
-                        cerr << "Syntax error " << endl;
-                        return 1;
-                    }
+                    if(!valueAllowed) { cerr << "Syntax error " << endl; return 1; }
                     vector<bool> stack;
-                    while (position < ::strlen(programText) &&
-                           (programText[position] == '0' || programText[position] == '1')) {
+                    while (position < ::strlen(programText)) {
                         stack.push_back(programText[position] == '0');
-                        ++position;
+                        if(programText[position + 1] == '0' || programText[position + 1] == '1') {
+                            ++position;
+                        } else {
+                            break;
+                        }
                     }
-                    write.push_back(stack);
-                    valueAllowed = false;
+                    if (hasDivider) write.push_back(stack);
+                    else read.push_back(stack);
                     break;
             }
             position++;
         }
-        programStack.emplace_back(read, write);
         position++;
+        programStack.emplace_back(read, write);
     }
     //executes program stack / interpret
     bool stackChanged = true;
     while (stackChanged) {
         stackChanged = false;
         for (const Statement &statement: programStack) {
-            if(executeStatement(statement, stacks)) {
+            if (executeStatement(statement, stacks)) {
                 stackChanged = true;
             }
         }
