@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
         }
         if (stacks.empty() || stacks[1].empty()) return 0;
         string binaryOutput;
-        for (bool &&e : stacks[1]) { //TODO: problem is that the output is read from index 1 but this is nullprt only at index 0
+        for (bool &&e : stacks[1]) { //TODO: problem is that the output is read from index 1 but this is not set correctly; only at index 0 are elements
             cout << e << endl;
             binaryOutput.push_back(e ? '0' : '1');
         }
