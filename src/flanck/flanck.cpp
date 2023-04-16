@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
         vector<vector<bool> > write;
         bool valueAllowed = false;
         bool hasDivider = false;
-        //TODO: add empty stacks into statements
+        vector<bool> stack;
         while (programText[position] != '\n' && position < ::strlen(programText)) {
             switch (programText[position]) {
                 case '[':
@@ -112,6 +112,7 @@ int main(int argc, char *argv[]) {
                         cerr << "Syntax error " << endl;
                         return 1;
                     }
+                    stack.clear();
                     valueAllowed = true;
                     break;
                 case ']':
@@ -120,6 +121,8 @@ int main(int argc, char *argv[]) {
                         return 1;
                     }
                     valueAllowed = false;
+                    if (hasDivider) write.push_back(stack);
+                    else read.push_back(stack);
                     break;
                 case ':':
                     if (valueAllowed) {
@@ -135,7 +138,6 @@ int main(int argc, char *argv[]) {
                         cerr << "Syntax error " << endl;
                         return 1;
                     }
-                    vector<bool> stack;
                     while (position < ::strlen(programText)) {
                         stack.push_back(programText[position] == '0');
                         if (programText[position + 1] == '0' || programText[position + 1] == '1') {
@@ -144,8 +146,6 @@ int main(int argc, char *argv[]) {
                             break;
                         }
                     }
-                    if (hasDivider) write.push_back(stack);
-                    else read.push_back(stack);
                     break;
             }
             position++;
