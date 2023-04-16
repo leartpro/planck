@@ -26,6 +26,7 @@ struct Statement {
 void executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
     for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
         if (stacks.size() < stack_index + 1) stacks.emplace_back();
+        if(stacks[stack_index].empty() && !statement.condition.empty()) return;
         for (int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
             if (statement.condition[stack_index][stack_position] !=
                 stacks[stack_index][stacks[stack_index].size() - stack_position - 1]) {
@@ -73,13 +74,15 @@ int main(int argc, char *argv[]) {
     programText[index] = '\0';
     //initialize stacks
     vector<vector<bool> > stacks;
-    for (int i = 0; i < ::strlen(argv[2]); i++) {
-        vector<bool> stack;
-        while (argv[2][i] != '|' && i < ::strlen(argv[2])) {
-            stack.push_back(argv[2][i] == '0');
-            i++;
+    if (argc == 3) {
+        for (int i = 0; i < ::strlen(argv[2]); i++) {
+            vector<bool> stack;
+            while (argv[2][i] != '|' && i < ::strlen(argv[2])) {
+                stack.push_back(argv[2][i] == '0');
+                i++;
+            }
+            stacks.push_back(stack);
         }
-        stacks.push_back(stack);
     }
     //initialize program stack / lexing+parsing
     vector<Statement> programStack;
