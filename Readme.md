@@ -22,7 +22,7 @@ Possible flags for `[-option]` are:
 
 | flag | name   | description                  | usage                |
   |------|--------|------------------------------|----------------------|
-| -d   | debug  | switches the debug output on | `-d`                 |
+| -d   | debug  | switches the debug instructions on | `-d`                 |
 | -b   | break  | breaks at the given line     | `-b <line number>`   |
 
 By default, Input and Output are the console.
