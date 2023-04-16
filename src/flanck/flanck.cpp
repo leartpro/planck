@@ -17,6 +17,12 @@ struct Statement {
 void executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
     for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
         for (int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
+            //TODO: EXC_BAD_ACCESS (code=1, address=0x8)
+            // this = {const std::vector<bool> *} NULL
+
+            /*
+             * This error happens because stacks does not contain anything
+             */
             if (statement.condition[stack_index][stack_position] !=
                 stacks[stack_index][stacks[stack_index].size() - stack_position]) {
                 return;
@@ -64,21 +70,22 @@ int main(int argc, char *argv[]) {
         while (position < ::strlen(programText)) {
             vector<vector<bool> > read;
             bool valueAllowed = false;
-            while (programText[position] != ':') {
+            while (programText[position] != ':' && position < ::strlen(programText)) {
                 switch (programText[position]) {
                     case '[':
-                        position++;
                         valueAllowed = true;
                         break;
                     case ']':
-                        position++;
                         valueAllowed = false;
                         break;
                     case '0':
                     case '1':
-                        if (!valueAllowed) return -1; //Syntax Error
+                        if (!valueAllowed) {
+                            cerr << "Syntax error " << endl;
+                            return -1;
+                        }
                         vector<bool> stack;
-                        while (::strlen(programText) < position &&
+                        while (position < ::strlen(programText)  &&
                                (programText[position] == '0' || programText[position] == '1')) {
                             stack.push_back(programText[position] == '0');
                             ++position;
@@ -89,15 +96,14 @@ int main(int argc, char *argv[]) {
                 }
                 position++;
             }
+            position++;
             vector<vector<bool> > write;
-            while (programText[position] != '\n') {
+            while (programText[position] != '\n' && position < ::strlen(programText)) {
                 switch (programText[position]) {
                     case '[':
-                        position++;
                         valueAllowed = true;
                         break;
                     case ']':
-                        position++;
                         valueAllowed = false;
                         break;
                     case '0':
@@ -107,20 +113,21 @@ int main(int argc, char *argv[]) {
                             return 1;
                         }
                         vector<bool> stack;
-                        while (::strlen(programText) < position &&
+                        while (position < ::strlen(programText) &&
                                (programText[position] == '0' || programText[position] == '1')) {
                             stack.push_back(programText[position] == '0');
                             ++position;
                         }
                         write.push_back(stack);
-                        programStack.emplace_back(read, write);
                         valueAllowed = false;
                         break;
                 }
                 position++;
             }
+            programStack.emplace_back(read, write);
             position++;
         }
+        //works until here (debugging shows noting suspicious)
         for (const Statement &statement: programStack) {
             executeStatement(statement, stacks);
         }
