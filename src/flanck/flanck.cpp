@@ -22,25 +22,29 @@ struct Statement {
  * Führt das Statement aus, indem die Conditions geprüft werden und bei Richtigkeit die Instructions ausgeführt werden
  * @param statement
  * @param stacks
+ * @return true wenn sich etwas auf den stacks verändert hat
  */
-void executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
+bool executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
     for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
         if (stacks.size() < stack_index + 1) stacks.emplace_back();
-        if(stacks[stack_index].empty() && !statement.condition.empty()) return;
+        if(stacks[stack_index].empty() && !statement.condition.empty()) return false;
         for (int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
             if (statement.condition[stack_index][stack_position] !=
                 stacks[stack_index][stacks[stack_index].size() - stack_position - 1]) {
-                return;
+                return false;
             }
         }
     }
+    bool  hasChanged = false;
     for (int stack_index = 0; stack_index < statement.instructions.size(); stack_index++) {
         if (stacks.size() < stack_index + 1) stacks.emplace_back();
         stacks[stack_index].insert(stacks[stack_index].end(),
                                    statement.instructions[stack_index].begin(),
                                    statement.instructions[stack_index].end()
         );
+        hasChanged = true;
     }
+    return hasChanged;
 }
 
 /**
@@ -149,12 +153,17 @@ int main(int argc, char *argv[]) {
         position++;
     }
     //executes program stack / interpret
-    //TODO: execute until nothing in 'stacks' changes
-    for (const Statement &statement: programStack) {
-        executeStatement(statement, stacks);
+    bool stackChanged = true;
+    while (stackChanged) {
+        stackChanged = false;
+        for (const Statement &statement: programStack) {
+            if(executeStatement(statement, stacks)) {
+                stackChanged = true;
+            }
+        }
     }
     //print program output
-    if (stacks.size() < 2)return 0;
+    if (stacks.size() < 2) return 0;
     string binaryOutput;
     for (bool &&e: stacks[1]) {
         binaryOutput.push_back(e ? '0' : '1');
