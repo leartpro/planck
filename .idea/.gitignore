@@ -7,3 +7,7 @@
 /dataSources/
 /dataSources.local.xml
 /vcs.xml
+# Others
+/misc.xml
+/modules.xml
+/planck.iml

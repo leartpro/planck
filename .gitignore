@@ -50,6 +50,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/planck.iml
