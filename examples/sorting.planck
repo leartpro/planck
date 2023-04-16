@@ -3,7 +3,7 @@ unsorted
 init_unsorted
 count_of_elements = count unsorted
 sorted = sort unsorted
-instructions sorted
+output sorted
 
 //reads from programm args
 init_unsorted $num {
@@ -60,7 +60,7 @@ sort elements {
     }
 }
 
-instructions elements {
+output elements {
     [elements ?>] { //for each element
         current = printable_number elements
         [current ?>] { //for each digit
