@@ -25,26 +25,34 @@ struct Statement {
  * @return true wenn sich etwas auf den stacks verändert hat
  */
 bool executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
+    //dynamically add stacks
+    int count_of_stacks = int(max(statement.condition.size(), statement.instructions.size()));
+    while (stacks.size() < count_of_stacks) stacks.push_back(*new vector<bool>());
+    //validate conditions
     for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
-        if (stacks.size() < stack_index + 1) stacks.emplace_back();
-        if (stacks[stack_index].empty() && !statement.condition.empty()) return false;
-        for (int stack_position = int(statement.condition[stack_index].size()); stack_position > 0; stack_position--) {
-            if (statement.condition[stack_index][stack_position] !=
-                stacks[stack_index][stacks[stack_index].size() - stack_position - 1]) {
+        if(statement.condition[stack_index].size() > stacks[stack_index].size()) return false;
+        for(int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
+            if(statement.condition[stack_index][stack_position] != stacks[stack_index][stacks[stack_index].size() -1 - stack_position]) {
                 return false;
             }
         }
     }
-    bool hasChanged = false;
-    //TODO: legt nicht die gesamte introduction auf den keller
+    //remove conditions from stacks
+    for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
+        if (stacks[stack_index].size() > statement.condition[stack_index].size())
+            stacks[stack_index].erase(stacks[stack_index].begin() + int(stacks[stack_index].size() - statement.condition[stack_index].size()),
+                                      stacks[stack_index].end());
+        else stacks[stack_index].erase(stacks[stack_index].begin(), stacks[stack_index].end());
+    }
+    //execute instructions
+    bool changes = false;
     for (int stack_index = 0; stack_index < statement.instructions.size(); stack_index++) {
-        if (stacks.size() < stack_index + 1) stacks.emplace_back();
         for (int stack_position = int(statement.instructions[stack_index].size()); stack_position > 0; stack_position--) {
-            stacks[stack_index].push_back(statement.instructions[stack_index][stack_position]);
-            hasChanged = true;
+            stacks[stack_index].push_back(statement.instructions[stack_index][stack_position - 1]);
+            changes = true;
         }
     }
-    return hasChanged;
+    return changes;
 }
 
 /**
@@ -96,6 +104,7 @@ int main(int argc, char *argv[]) {
         vector<vector<bool> > write;
         bool valueAllowed = false;
         bool hasDivider = false;
+        //TODO: add empty stacks into statements
         while (programText[position] != '\n' && position < ::strlen(programText)) {
             switch (programText[position]) {
                 case '[':
