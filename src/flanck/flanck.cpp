@@ -18,7 +18,8 @@ struct Statement {
     vector<vector<bool> > instructions;
 };
 
-//TODO: does not work for helloWorld.flanck but for helloWorldLoop.flanck
+//TODO: does not work correctly but without error for helloWorld.flanck but for helloWorldLoop.flanck
+// causing error in result print because the second introduction is never executed
 /**
  * Führt das Statement aus, indem die Conditions geprüft werden und bei Richtigkeit die Instructions ausgeführt werden
  * @param statement
@@ -153,7 +154,7 @@ int main(int argc, char *argv[]) {
         }
         if (stacks.empty() || stacks[1].empty()) return 0;
         string binaryOutput;
-        for (std::__bit_iterator<std::vector<bool>, false, 0>::reference &&e : stacks[1]) {
+        for (bool &&e : stacks[1]) { //TODO: problem is that the output is read from index 1 but this is nullprt only at index 0
             cout << e << endl;
             binaryOutput.push_back(e ? '0' : '1');
         }
