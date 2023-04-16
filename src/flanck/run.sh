@@ -1,1 +1,1 @@
-./flanck
+./flanck ../../examples/flanck/helloWorld.flanck 0
