@@ -128,9 +128,11 @@ int main(int argc, char *argv[]) {
             position++;
         }
         //works until here (debugging shows noting suspicious)
+        //TODO: execute until nothing in 'stacks' changes
         for (const Statement &statement: programStack) {
             executeStatement(statement, stacks);
         }
+        //TODO: print as ascii
         for (auto &&e: stacks[1]) {
             cout << (e ? 'a' : 'b');
         }
