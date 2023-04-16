@@ -147,7 +147,9 @@ int main(int argc, char *argv[]) {
         for (const Statement &statement: programStack) {
             executeStatement(statement, stacks);
         }
-        if (stacks.empty() || stacks[1].empty()) return 0;
+        if (stacks.size() < 2) {
+            return 0;
+        };
         string binaryOutput;
         for (bool &&e : stacks[1]) { //TODO: problem is that the output is read from index 1 but this is not set correctly; only at index 0 are elements
             binaryOutput.push_back(e ? '0' : '1');
