@@ -27,17 +27,15 @@ struct Statement {
  */
 void executeStatement(const Statement &statement, vector<vector<bool>> &stacks) {
     for (int stack_index = 0; stack_index < statement.condition.size(); stack_index++) {
-        if (stacks.empty()) stacks.emplace_back();
+        if (stacks.size() < stack_index + 1) stacks.emplace_back();
         for (int stack_position = 0; stack_position < statement.condition[stack_index].size(); stack_position++) {
-            if (stacks[stack_index].empty()) stacks[stack_index].push_back({});
-            if (statement.condition[stack_index][stack_position] !=
-                stacks[stack_index][stacks[stack_index].size() - stack_position]) {
+            if (statement.condition[stack_index][stack_position] != stacks[stack_index][stacks[stack_index].size() - stack_position -1]) {
                 return;
             }
         }
     }
     for (int stack_index = 0; stack_index < statement.instructions.size(); stack_index++) {
-        if (stacks.empty()) stacks.emplace_back();
+        if (stacks.size() < stack_index + 1) stacks.emplace_back();
         stacks[stack_index].insert(stacks[stack_index].end(),
                                    statement.instructions[stack_index].begin(),
                                    statement.instructions[stack_index].end()
@@ -52,9 +50,6 @@ void executeStatement(const Statement &statement, vector<vector<bool>> &stacks) 
  * @return 0 wenn es zu keinem Fehler gekommen ist
  */
 int main(int argc, char *argv[]) {
-    cout << argv[0] << endl;
-    cout << argv[1] << endl;
-    cout << argv[2] << endl;
 
     if (argc > 3) {
         cerr << "Unexpected arguments " << endl;
@@ -155,7 +150,6 @@ int main(int argc, char *argv[]) {
         if (stacks.empty() || stacks[1].empty()) return 0;
         string binaryOutput;
         for (bool &&e : stacks[1]) { //TODO: problem is that the output is read from index 1 but this is not set correctly; only at index 0 are elements
-            cout << e << endl;
             binaryOutput.push_back(e ? '0' : '1');
         }
         stringstream sstream(binaryOutput);
