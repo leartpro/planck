@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <utility>
+#include <sstream>
 
 using namespace std;
 
@@ -132,10 +133,17 @@ int main(int argc, char *argv[]) {
         for (const Statement &statement: programStack) {
             executeStatement(statement, stacks);
         }
-        //TODO: print as ascii
-        for (auto &&e: stacks[1]) {
-            cout << (e ? 'a' : 'b');
+        string binaryOutput;
+        for (auto &&e: stacks[1]) binaryOutput.push_back(e ? '0' : '1');
+        stringstream sstream(binaryOutput);
+        string asciiOutput;
+        while (sstream.good()) {
+            bitset<8> bits;
+            sstream >> bits;
+            char ch = char(bits.to_ulong());
+            asciiOutput += ch;
         }
+        cout << asciiOutput << endl;
     }
     catch (exception &e) {
         cerr << e.what() << endl;
