@@ -138,9 +138,12 @@ int main(int argc, char *argv[]) {
     }
     //print program output
     if (stacks.size() < 2) return 0;
-    for (int i = 0; i < stacks[1].size(); i += 8) {
+    int size = int(stacks[1].size() - (stacks[1].size() % 8));
+    for (int i = 0; i < size; i += 8) {
         std::bitset<8> byte;
-        for (int j = 0; j < 8; j++) byte[7-j] = (!stacks[1][i + j]);
+        for (int j = 0; j < 8; j++) {
+            byte[7-j] = (!stacks[1][i + j]);
+        }
         cout << char(byte.to_ulong());
     }
     return 0;
